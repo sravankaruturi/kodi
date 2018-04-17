@@ -31,6 +31,11 @@ int main() {
 	}
 
 	double x, y;
+	
+	math::mat4 position = math::mat4::translation(math::vec3(2, 3, 4));
+	math::mat4 newPosition = math::mat4::translation(math::vec3(0, 1, 2));
+
+	math::mat4 newMatrix = position * newPosition;
 
 	while (!window.IsClosed()) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
