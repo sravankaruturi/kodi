@@ -1,6 +1,7 @@
 #pragma once
 
 #include "vec3.h"
+#include "vec4.h"
 
 namespace kodi {
 	namespace math {
@@ -19,7 +20,12 @@ namespace kodi {
 
 		struct mat4 {
 
-			float elements[16];
+			// Idhi Column major kaabatti pani chesthundhi. Leka pothe ilaapanicheyyadhu appudumanam rows pettukovaalikkada.
+			union {
+				float elements[16];
+				vec4 columns[4];
+			};
+			
 
 			mat4();
 			mat4(float diagonal);

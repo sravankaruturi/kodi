@@ -2,8 +2,8 @@
 
 #include "Graphics/Window.h"
 #include <iostream>
-
 #include "Math/Math.h"
+#include "Utils/fileUtils.h"
 
 int main() {
 
@@ -14,6 +14,10 @@ int main() {
 	glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
 
 	std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl; 
+
+	std::string test = utils::read_file("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/main.cpp");
+	std::cout << test << std::endl;
+	return 0;
 
 	math::vec4 a(1.0f, 1.0f, 1.0f, 1.0f);
 	math::vec4 b(2.0f, 2.0f, 2.0f, 2.0f);
@@ -36,6 +40,8 @@ int main() {
 	math::mat4 newPosition = math::mat4::translation(math::vec3(0, 1, 2));
 
 	math::mat4 newMatrix = position * newPosition;
+
+	std::cout << newMatrix.columns[0] << std::endl;
 
 	while (!window.IsClosed()) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

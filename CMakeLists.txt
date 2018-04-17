@@ -22,3 +22,5 @@ include(Source/CMakeLists.txt)
 include(${PROJECT_SOURCE_DIR}/librarybinaries/CMakeLists.txt)
 
 target_include_directories(Kodi-Engine PRIVATE ${PROJECT_SOURCE_DIR}/includes/)
+
+target_compile_definitions(Kodi-Engine PRIVATE _CRT_SECURE_NO_WARNINGS=1)
