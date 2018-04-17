@@ -3,6 +3,8 @@
 #include "Graphics/Window.h"
 #include <iostream>
 
+#include "Math/Math.h"
+
 int main() {
 
 	using namespace kodi;
@@ -12,6 +14,21 @@ int main() {
 	glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
 
 	std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl; 
+
+	math::vec4 a(1.0f, 1.0f, 1.0f, 1.0f);
+	math::vec4 b(2.0f, 2.0f, 2.0f, 2.0f);
+
+	math::vec4 c = a + b;
+
+	std::cout << a << std::endl;
+	std::cout << b << std::endl;
+	std::cout << c << std::endl;
+
+	b -= a;
+
+	if (b == a) {
+		std::cout << "Equal" << std::endl;
+	}
 
 	double x, y;
 
