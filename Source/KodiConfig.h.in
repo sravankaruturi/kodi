@@ -1,0 +1,2 @@
+#define Kodi_VERSION_MAJOR @Kodi_VERSION_MAJOR@
+#define Kodi_VERSION_MINOR @Kodi_VERSION_MINOR@
