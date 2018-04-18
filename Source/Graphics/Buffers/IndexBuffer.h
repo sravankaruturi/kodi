@@ -17,8 +17,8 @@ namespace kodi {
 			GLuint GetBufferID() const;
 			GLuint GetIndexCount() const;
 
-			void IndexBuffer::Bind();
-			void IndexBuffer::UnBind();
+			void IndexBuffer::Bind() const;
+			void IndexBuffer::UnBind() const;
 
 		};
 

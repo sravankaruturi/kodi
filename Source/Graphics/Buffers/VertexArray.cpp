@@ -14,7 +14,7 @@ namespace kodi {
 		}
 
 		// Ikkada _index manaki shaderlo location tho samaanamu
-		void VertexArray::addBuffer(Buffer * _buffer, GLuint _index)
+		void VertexArray::AddBuffer(Buffer * _buffer, GLuint _index)
 		{
 
 			Bind();
@@ -31,12 +31,12 @@ namespace kodi {
 
 		}
 
-		void VertexArray::Bind()
+		void VertexArray::Bind() const
 		{
 			glBindVertexArray(vertexArrayID);
 		}
 
-		void VertexArray::UnBind()
+		void VertexArray::UnBind() const
 		{
 			glBindVertexArray(0);
 		}

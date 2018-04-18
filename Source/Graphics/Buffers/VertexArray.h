@@ -20,10 +20,10 @@ namespace kodi {
 			VertexArray();
 			~VertexArray();
 
-			void addBuffer(Buffer * _buffer, GLuint _index);
+			void AddBuffer(Buffer * _buffer, GLuint _index);
 
-			void Bind();
-			void UnBind();
+			void Bind() const;
+			void UnBind() const;
 
 		};
 
