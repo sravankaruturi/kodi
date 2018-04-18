@@ -44,6 +44,8 @@ namespace kodi {
 			bool isMouseButtonPressed(unsigned int _button) const;
 			void GetMousePosition(double& x, double& y) const;
 
+			void clear() const;
+
 		private:
 			bool Init();
 

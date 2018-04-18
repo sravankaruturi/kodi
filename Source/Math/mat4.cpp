@@ -21,9 +21,9 @@ namespace kodi {
 				elements[i] = 0.0f;
 			}
 			elements[0 + 0 * 4] = diagonal;
-			elements[0 + 1 * 4] = diagonal;
-			elements[0 + 2 * 4] = diagonal;
-			elements[0 + 3 * 4] = diagonal;
+			elements[1 + 1 * 4] = diagonal;
+			elements[2 + 2 * 4] = diagonal;
+			elements[3 + 3 * 4] = diagonal;
 		}
 
 		mat4 & mat4::multiply(const mat4 & _other)
@@ -68,20 +68,20 @@ namespace kodi {
 		{
 			// Orthographic matrixki formula. kavalante okasaari internetlo choodu.
 			/*
-			2/(r-l)		0			0			(r+l)/(r-l)
-			0			2/(t-b)		0			(t+b)/(t-b)
+			2/(r-l)		0			0			(r+l)/(l-r)
+			0			2/(t-b)		0			(t+b)/(b-t)
 			0			0			-2/(f-n)	(f+n)/(f-n)
 			0			0			0			1
 			*/
-			mat4 returnMatrix;
+			mat4 returnMatrix(1.0f);
 
 			//					Row		Col
 			returnMatrix.elements[0 + 0 * 4] = 2.0f / (_right - _left);
 			returnMatrix.elements[1 + 1 * 4] = 2.0f / (_top - _bottom);
 			returnMatrix.elements[2 + 2 * 4] = -2.0f / (_far - _near);
 
-			returnMatrix.elements[0 + 3 * 4] = (_right + _left)/ (_right - _left);
-			returnMatrix.elements[1 + 3 * 4] = (_top + _bottom) / (_top - _bottom);
+			returnMatrix.elements[0 + 3 * 4] = (_right + _left)/ (_left - _right);
+			returnMatrix.elements[1 + 3 * 4] = (_top + _bottom) / (_bottom - _top);
 			returnMatrix.elements[2 + 3 * 4] = (_far + _near) / (_far - _near);
 			returnMatrix.elements[3 + 3 * 4] = 1.0f;
 

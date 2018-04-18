@@ -3,66 +3,59 @@
 #include "Graphics/Window.h"
 #include <iostream>
 #include "Math/Math.h"
-#include "Utils/fileUtils.h"
+#include "Graphics/Shader.h"
 
 int main() {
 
 	using namespace kodi;
 	using namespace graphics;
+	using namespace math;
 
 	Window window("Kodi", 800, 600);
-	glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
 	std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl; 
 
-	std::string test = utils::read_file("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/main.cpp");
-	std::cout << test << std::endl;
-	return 0;
+	GLfloat vertices[] =
+	{
+		0, 0, 0,
+		8, 0, 0,
+		0, 3, 0,
+		0, 3, 0,
+		8, 3, 0,
+		8, 0, 0
+	};
 
-	math::vec4 a(1.0f, 1.0f, 1.0f, 1.0f);
-	math::vec4 b(2.0f, 2.0f, 2.0f, 2.0f);
-
-	math::vec4 c = a + b;
-
-	std::cout << a << std::endl;
-	std::cout << b << std::endl;
-	std::cout << c << std::endl;
-
-	b -= a;
-
-	if (b == a) {
-		std::cout << "Equal" << std::endl;
-	}
-
-	double x, y;
+	GLuint vbo;
+	glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(0);
 	
-	math::mat4 position = math::mat4::translation(math::vec3(2, 3, 4));
-	math::mat4 newPosition = math::mat4::translation(math::vec3(0, 1, 2));
+	mat4 ortho = mat4::orthographic(0.0f, 16.0f, 0.0f, 9.0f, -1.0f, 1.0f);
 
-	math::mat4 newMatrix = position * newPosition;
+	Shader shader("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/Shaders/basic.vert", "C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/Shaders/basic.frag");
 
-	std::cout << newMatrix.columns[0] << std::endl;
+	shader.Enable();
+	shader.setMat4("pr_matrix", ortho);
+	// glUniformMatrix4fv(glGetUniformLocation(shader.GetShaderID(), "projectionMatrix"), 1, GL_FALSE, ortho.elements);
+	shader.setMat4("ml_matrix", mat4::translation(vec3(4, 3, 0)));
+
+	shader.setVec2("light_pos", vec2(4.0f, 1.5f));
+	shader.setVec4("colour", vec4(0.2f, 0.3f, 0.8f, 1.0f));
 
 	while (!window.IsClosed()) {
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		if (window.isKeyPressed(GLFW_KEY_A))
-			std::cout <<  "Pressed" << std::endl;
-		if (window.isMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT))
-			std::cout << "Left Mouse Pressed" << std::endl;
-
-		window.GetMousePosition(x, y);
-
-		// std::cout << x << ", " << y << std::endl;
-
-		glBegin(GL_QUADS);
-		glVertex2f(-0.5f, -0.5f);
-		glVertex2f(-0.5f, 0.5f);
-		glVertex2f(0.5f, 0.5f);
-		glVertex2f(0.5f, -0.5f);
 		
-		glEnd();
+		window.clear();
 
+		double x, y;
+		window.GetMousePosition(x, y);
+		if (x > 0 && y > 0 && x < 2000 && y < 2000) {
+			shader.setVec2("light_pos", vec2((float)(x * 16.0f / 960.0f), (float)(9.0f - y * 9.0f / 540.0f)));
+		}
+		
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 		window.Update();
 
 		if (window.isKeyPressed(GLFW_KEY_ESCAPE)) {
