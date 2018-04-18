@@ -39,7 +39,7 @@ int main() {
 		double x, y;
 		window.GetMousePosition(x, y);
 		if (x > 0 && y > 0 && x < 2000 && y < 2000) {
-			shader.setVec2("light_pos", vec2((float)(x * 16.0f / 960.0f), (float)(9.0f - y * 9.0f / 540.0f)));
+			shader.setVec2("light_pos", vec2((float)(x * 16.0f / 800.f), (float)(9.0f - y * 9.0f / 600.f)));
 		}
 
 		shader.setMat4("ml_matrix", mat4::translation(vec3(4, 3, 0)));
