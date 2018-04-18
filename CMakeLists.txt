@@ -19,8 +19,12 @@ include_directories("${PROJECT_BINARY_DIR}")
 add_executable(Kodi-Engine "")
 
 include(Source/CMakeLists.txt)
+include(Source/Graphics/Buffers/CMakeLists.txt)
 include(${PROJECT_SOURCE_DIR}/librarybinaries/CMakeLists.txt)
 
 target_include_directories(Kodi-Engine PRIVATE ${PROJECT_SOURCE_DIR}/includes/)
 
 target_compile_definitions(Kodi-Engine PRIVATE _CRT_SECURE_NO_WARNINGS=1)
+
+# Kodi Exceptions
+target_compile_definitions(Kodi-Engine PRIVATE KODI_THROW_EXCEPTIONS=1)

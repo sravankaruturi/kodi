@@ -1,5 +1,6 @@
 #include "Window.h"
 #include <iostream>
+#include <assert.h>
 
 namespace kodi {
 	namespace graphics {
@@ -96,6 +97,16 @@ namespace kodi {
 		void Window::Update()
 		{
 			
+			GLenum error = glGetError();
+
+			if (error != GL_NO_ERROR) {
+				std::cout << "OpenGL Error : " << error << std::endl;
+			}
+
+#ifdef KODI_THROW_EXCEPTIONS
+			assert(error == GL_NO_ERROR);
+#endif
+
 			glfwPollEvents();
 
 			glfwSwapBuffers(window);

@@ -57,7 +57,7 @@ namespace kodi {
 				glDeleteShader(vertex);
 			}
 
-#if _DEBUG
+#ifdef KODI_THROW_EXCEPTIONS
 			// Error Variable choodu
 			assert(GL_FALSE != result);
 #endif
@@ -76,7 +76,7 @@ namespace kodi {
 				glDeleteShader(fragment);
 			}
 
-#if _DEBUG
+#ifdef KODI_THROW_EXCEPTIONS
 			// Error Variable choodu
 			assert(GL_FALSE != result);
 #endif
