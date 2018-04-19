@@ -15,6 +15,11 @@ namespace kodi {
 
 		}
 
+		Buffer::~Buffer()
+		{
+			glDeleteBuffers(1, &bufferID);
+		}
+
 		GLuint Buffer::GetBufferID() const
 		{
 			return this->bufferID;

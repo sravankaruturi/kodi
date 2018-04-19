@@ -12,7 +12,8 @@ namespace kodi {
 
 		public:
 
-			IndexBuffer(GLushort * _data, GLsizei _count);
+			IndexBuffer(GLuint * _data, GLsizei _count);
+			~IndexBuffer();
 
 			GLuint GetBufferID() const;
 			GLuint GetIndexCount() const;

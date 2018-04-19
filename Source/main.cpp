@@ -5,6 +5,16 @@
 #include "Math/Math.h"
 
 #include "Graphics/Simple2DRenderer.h"
+#include "Graphics/BatchRenderer2D.h"
+
+#include "Graphics/Sprite.h"
+#include "Graphics/StaticSprite.h"
+
+#include <time.h>
+
+#include <assert.h>
+
+#define USE_BATCH_RENDERER 0
 
 int main() {
 
@@ -25,12 +35,39 @@ int main() {
 	shader.Enable();
 	shader.setMat4("pr_matrix", ortho);
 	shader.setVec2("light_pos", vec2(4.0f, 1.5f));
-	shader.setVec4("colour", vec4(0.2f, 0.3f, 0.8f, 1.0f));
 
-	Renderable2D sprite1(vec3(5, 5, 0), vec2(4, 4), vec4(1, 0, 1, 1), &shader);
-	Renderable2D sprite2(vec3(7, 1, 0), vec2(2, 3), vec4(0.2f, 0, 1, 1), &shader);
+	std::vector<Renderable2D *> sprites;
 
+	srand(time(NULL));
+
+	for (float y = 0; y < 9.0f; y += 0.05)
+	{
+		for (float x = 0; x < 16.0f; x += 0.05)
+		{
+			sprites.push_back(new
+#if USE_BATCH_RENDERER
+				Sprite
+#else
+				StaticSprite
+#endif
+				(x, y, 0.04f, 0.04f, vec4(rand() % 1000 / 1000.0f, 0, 1, 1)
+#if !USE_BATCH_RENDERER
+					, shader
+#endif
+
+					));
+		}
+	}
+
+#if USE_BATCH_RENDERER
+	Sprite sprite(5, 5, 4, 4, vec4(1, 0, 1, 1));
+	Sprite sprite2(7, 1, 2, 3, vec4(0.2f, 0, 1, 1));
+	BatchRenderer2D renderer;
+#else
+	StaticSprite sprite(5, 5, 4, 4, vec4(1, 0, 1, 1), shader);
+	StaticSprite sprite2(7, 1, 2, 3, vec4(0.2f, 0, 1, 1), shader);
 	Simple2DRenderer renderer;
+#endif
 
 	while (!window.IsClosed()) {
 		
@@ -42,12 +79,25 @@ int main() {
 			shader.setVec2("light_pos", vec2((float)(x * 16.0f / 800.f), (float)(9.0f - y * 9.0f / 600.f)));
 		}
 
-		shader.setMat4("ml_matrix", mat4::translation(vec3(4, 3, 0)));
+		
+#if USE_BATCH_RENDERER
+		renderer.Begin();
+#endif
 
-		renderer.Submit(&sprite1);
-		renderer.Submit(&sprite2);
+		for (int i = 0; i < sprites.size(); i++) {
+			renderer.Submit(sprites[i]);
+		}
+
+		//renderer.Submit(&sprite);
+		//renderer.Submit(&sprite2);
+
+#if USE_BATCH_RENDERER
+		renderer.End();
+#endif
 
 		renderer.Flush();
+
+		printf("Sprites: %d\n", sprites.size());
 		
 		window.Update();
 

@@ -10,6 +10,7 @@ namespace kodi {
 		class Renderer2D {
 
 		public:
+
 			virtual void Submit(const Renderable2D* _renderable) = 0;
 			virtual void Flush() = 0;
 

@@ -10,7 +10,7 @@ namespace kodi {
 
 		VertexArray::~VertexArray()
 		{
-			
+			glDeleteVertexArrays(1, &vertexArrayID);
 		}
 
 		// Ikkada _index manaki shaderlo location tho samaanamu

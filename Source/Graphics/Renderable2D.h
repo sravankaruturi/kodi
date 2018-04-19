@@ -11,6 +11,13 @@ using namespace kodi::math;
 namespace kodi {
 	namespace graphics {
 
+		struct VertexData
+		{
+			// TODO: Packing. Memory align avvaledhu tharuvaatha optimisatin chesetappudu manam ikkada packing kosam choodu.
+			vec3 vertex;
+			vec4 colour;
+		};
+
 		class Renderable2D {
 
 		protected:
@@ -18,30 +25,21 @@ namespace kodi {
 			vec2 size;
 			vec4 colour;
 
-			Buffer * vertexBuffer;
-			Buffer * colourBuffer;
-
-			VertexArray * vertexArray;
-			IndexBuffer * indexBuffer;
-
-			Shader * shader;
-
 		public:
 
-			Renderable2D(vec3 _position, vec2 _size, vec4 _colour, Shader * _shader);
-			~Renderable2D();
+			Renderable2D(vec3 _position, vec2 _size, vec4 _colour)
+				: position(_position), size(_size), colour(_colour)
+			{	
+			}
+
+			~Renderable2D()
+			{
+			}
+
 
 			inline const vec3& GetPosition() const { return position; }
 			inline const vec2& GetSize() const { return size; }
 			inline const vec4& GetColour() const { return colour; }
-
-			inline const VertexArray * GetVAO() const { return vertexArray; }
-			inline const IndexBuffer * GetIBO() const { return indexBuffer; }
-
-			inline const Buffer * GetVertexBuffer() const { return vertexBuffer; }
-			inline const Buffer * GetColourBuffer() const { return colourBuffer; }
-
-			inline Shader * GetShader() const { return shader;  }
 
 		};
 

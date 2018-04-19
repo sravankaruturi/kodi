@@ -3,15 +3,20 @@
 namespace kodi {
 	namespace graphics {
 
-		IndexBuffer::IndexBuffer(GLushort * _data, GLsizei _count)
+		IndexBuffer::IndexBuffer(GLuint * _data, GLsizei _count)
 			: indexCount(_count)
 		{
 
 			glGenBuffers(1, &bufferID);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferID);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, _count * sizeof(GLushort), _data, GL_STATIC_DRAW);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, _count * sizeof(GLuint), _data, GL_STATIC_DRAW);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+		}
+
+		IndexBuffer::~IndexBuffer()
+		{
+			glDeleteBuffers(1, &bufferID);
 		}
 
 		GLuint IndexBuffer::GetBufferID() const

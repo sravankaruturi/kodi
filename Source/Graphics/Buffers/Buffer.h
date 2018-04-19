@@ -13,6 +13,7 @@ namespace kodi {
 		public:
 
 			Buffer(GLfloat * _data, GLsizei _count, GLuint _componentCount);
+			~Buffer();
 
 			GLuint GetBufferID() const;
 			GLuint GetComponentCount() const;
