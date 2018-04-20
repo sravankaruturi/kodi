@@ -35,7 +35,8 @@ namespace kodi
 
 			for ( const Renderable2D* iterator : renderables)
 			{
-				renderer2D->Submit(iterator);
+				// renderer2D->Submit(iterator);
+				iterator->SubmitToRenderer(renderer2D);
 			}
 
 			renderer2D->End();

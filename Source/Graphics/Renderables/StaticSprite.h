@@ -11,20 +11,20 @@ namespace kodi {
 
 			VertexArray * vertexArray;
 			IndexBuffer * indexBuffer;
-			Shader& shader;
+			Shader* shader;
 
 			Buffer * vertexBuffer;
 			Buffer * colourBuffer;
 
 		public:
 
-			StaticSprite(float _x, float _y, float _width, float _height, const math::vec4& _colour, Shader& _shader);
+			StaticSprite(float _x, float _y, float _width, float _height, const math::vec4& _colour, Shader* _shader);
 			~StaticSprite();
 
 			inline const VertexArray* GetVAO() const { return vertexArray; }
 			inline const IndexBuffer* GetIBO() const { return indexBuffer; }
 
-			inline Shader& GetShader() const { return shader; }
+			inline Shader* GetShader() const { return shader; }
 
 		};
 

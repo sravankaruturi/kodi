@@ -1,5 +1,6 @@
 # Use CMAKE
 cmake_minimum_required (VERSION 2.6)
+
 project (Kodi-Engine)
 
 # Project Version Number
@@ -12,22 +13,31 @@ configure_file(
   "${PROJECT_BINARY_DIR}/KodiConfig.h"
 )
 
-# Add the binary Directory to the Include Directories
-include_directories("${PROJECT_BINARY_DIR}")
 
-#WIN32 is necessary for a Windows Application. Other wise, it'd be treated as a console Application
 add_executable(Kodi-Engine "")
 
+
+################### Include Directories ###################
+target_include_directories(Kodi-Engine PRIVATE ${PROJECT_SOURCE_DIR}/includes/)
+include_directories("${PROJECT_BINARY_DIR}")
+
+
+################### All Folders ###################
 include(Source/CMakeLists.txt)
 include(Source/Graphics/Buffers/CMakeLists.txt)
+include(Source/Graphics/Layers/CMakeLists.txt)
+include(Source/Graphics/Renderables/CMakeLists.txt)
+include(Source/Graphics/Renderers/CMakeLists.txt)
 include(${PROJECT_SOURCE_DIR}/librarybinaries/CMakeLists.txt)
 
-target_include_directories(Kodi-Engine PRIVATE ${PROJECT_SOURCE_DIR}/includes/)
 
+
+
+
+################### Preprocessor Definitions ###################
 target_compile_definitions(Kodi-Engine PRIVATE _CRT_SECURE_NO_WARNINGS=1)
-
-# Kodi Exceptions
 target_compile_definitions(Kodi-Engine PRIVATE KODI_THROW_EXCEPTIONS=1)
 
 
+################### Documentation / Specification ###################
 # All the ints shall be int32_t

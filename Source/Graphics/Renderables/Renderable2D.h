@@ -1,10 +1,12 @@
 #pragma once
 
-#include "Buffers/VertexArray.h"
-#include "Buffers/IndexBuffer.h"
+#include "../Buffers/VertexArray.h"
+#include "../Buffers/IndexBuffer.h"
 
-#include "../Math/Math.h"
-#include "Shader.h"
+#include "../../Math/Math.h"
+#include "../Shader.h"
+
+#include "../Renderers/Renderer2D.h"
 
 using namespace kodi::math;
 
@@ -15,8 +17,9 @@ namespace kodi {
 		{
 			// TODO: Packing. Memory align avvaledhu tharuvaatha optimisatin chesetappudu manam ikkada packing kosam choodu.
 			vec3 vertex;
-			//vec4 colour;
 			unsigned int colour;
+			vec2 texCoord;
+			//vec4 colour;
 		};
 
 		class Renderable2D {
@@ -25,6 +28,10 @@ namespace kodi {
 			vec3 position;
 			vec2 size;
 			vec4 colour;
+
+		protected:
+
+			Renderable2D(){}
 
 		public:
 
@@ -35,6 +42,11 @@ namespace kodi {
 
 			~Renderable2D()
 			{
+			}
+
+			virtual void SubmitToRenderer(Renderer2D* _renderer) const
+			{
+				_renderer->Submit(this);
 			}
 
 

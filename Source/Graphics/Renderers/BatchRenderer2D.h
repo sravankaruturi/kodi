@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Renderer2D.h"
+#include "../Buffers/IndexBuffer.h"
+#include "../Renderables/Renderable2D.h"
 
 namespace kodi {
 	namespace graphics {

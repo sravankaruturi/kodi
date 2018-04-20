@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "Renderable2D.h"
-#include "Renderer2D.h"
+#include "../Renderables/Renderable2D.h"
+#include "../Renderers/Renderer2D.h"
 
 namespace kodi
 {

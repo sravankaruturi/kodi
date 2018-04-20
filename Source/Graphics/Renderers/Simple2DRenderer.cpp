@@ -1,5 +1,7 @@
 #include "Simple2DRenderer.h"
 
+#include "../Renderables/StaticSprite.h"
+#include <cassert>
 
 namespace kodi {
 	namespace graphics {
@@ -16,10 +18,19 @@ namespace kodi {
 				const StaticSprite* renderable = renderQueue.front();
 
 				(renderable->GetVAO())->Bind();
-
 				(renderable->GetIBO())->Bind();
+				renderable->GetShader()->setMat4("ml_matrix", math::mat4::translation(renderable->GetPosition()));
 
-				renderable->GetShader().setMat4("ml_matrix", math::mat4::translation(renderable->GetPosition()));
+				const auto error = glGetError();
+
+				if (error != GL_NO_ERROR) {
+					std::cout << "OpenGL Error : " << error << std::endl;
+				}
+
+#ifdef KODI_THROW_EXCEPTIONS
+				assert(error == GL_NO_ERROR);
+#endif
+
 				glDrawElements(GL_TRIANGLES, renderable->GetIBO()->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
 
 				(renderable->GetIBO())->Bind();
@@ -29,6 +40,7 @@ namespace kodi {
 				renderQueue.pop_front();
 
 			}
+
 		}
 
 	}

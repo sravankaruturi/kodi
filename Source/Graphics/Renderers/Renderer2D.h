@@ -1,33 +1,41 @@
 #pragma once
-#include "Renderable2D.h"
 
 #include <GL/glew.h>
-#include "../Math/Math.h"
+#include "../../Math/Math.h"
+#include <vector>
 
 namespace kodi {
 	namespace graphics {
+
+		class Renderable2D;
 
 		class Renderer2D {
 
 		protected:
 
 			// Manakkikkada Stack endhuku?
-			std::vector<mat4> transformationStack;
-			const mat4* transformationStackBack;
+			std::vector<math::mat4> transformationStack;
+			const math::mat4* transformationStackBack;
 
 		protected:
 
 			Renderer2D()
 			{
-				transformationStack.push_back(mat4::identity());
+				transformationStack.push_back(math::mat4::identity());
 				transformationStackBack = &transformationStack.back();
 			}
 
 		public:
 
-			void PushToTransformationStack(const mat4& _matrix)
+			void PushToTransformationStack(const math::mat4& _matrix, bool _override = false)
 			{
-				transformationStack.push_back(_matrix);
+				if ( _override)
+				{
+					transformationStack.push_back(_matrix);
+				}else
+				{
+					transformationStack.push_back(*transformationStackBack * _matrix);
+				}
 				transformationStackBack = &transformationStack.back();
 			}
 

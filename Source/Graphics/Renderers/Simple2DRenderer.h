@@ -2,7 +2,7 @@
 
 #include <deque>
 #include "Renderer2D.h"
-#include "StaticSprite.h"
+#include "../Renderables/StaticSprite.h"
 
 namespace kodi {
 

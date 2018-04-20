@@ -1,6 +1,8 @@
 #include "BatchRenderer2D.h"
 #include <assert.h>
 
+#include "../Renderables/Sprite.h"
+
 namespace kodi {
 	namespace graphics {
 
