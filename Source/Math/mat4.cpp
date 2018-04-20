@@ -39,7 +39,7 @@ namespace kodi {
 		}
 
 		// Rendu matrixla multiplication ikkada chesthaamu.
-		mat4 mat4::operator*(const mat4 & _other)
+		mat4 mat4::operator*(const mat4 & _other) const
 		{
 			mat4 returnMatrix;
 
@@ -56,6 +56,26 @@ namespace kodi {
 			}
 
 			return returnMatrix;
+		}
+
+		vec4 mat4::operator*(const vec4& _other) const
+		{
+			return vec4(
+				columns[0].x * _other.x + columns[1].x * _other.y + columns[2].x * _other.z + columns[3].x * _other.w,
+				columns[0].y * _other.x + columns[1].y * _other.y + columns[2].y * _other.z + columns[3].y * _other.w,
+				columns[0].z * _other.x + columns[1].z * _other.y + columns[2].z * _other.z + columns[3].z * _other.w,
+				columns[0].w * _other.x + columns[1].w * _other.y + columns[2].w * _other.z + columns[3].w * _other.w
+			);
+		}
+
+		/*We assume that the other.w, the 4th parameter is 0*/
+		vec3 mat4::operator*(const vec3& _other) const
+		{
+			return vec3(
+				columns[0].x * _other.x + columns[1].x * _other.y + columns[2].x * _other.z,
+				columns[0].y * _other.x + columns[1].y * _other.y + columns[2].y * _other.z,
+				columns[0].z * _other.x + columns[1].z * _other.y + columns[2].z * _other.z
+			);
 		}
 
 		mat4& mat4::operator*=(const mat4 & _other)

@@ -36,8 +36,12 @@ namespace kodi {
 			static mat4 identity();
 
 			// Operatorlu
-			mat4 operator * (const mat4& _other);
+			mat4 operator * (const mat4& _other) const;
+			vec4 operator * (const vec4& _other) const;
+			vec3 operator * (const vec3& _other) const;
+
 			mat4& operator *= (const mat4& _other);
+
 			//mat4 operator ==(const mat4& _other);
 			//mat4 operator + (const mat4& _other);
 
