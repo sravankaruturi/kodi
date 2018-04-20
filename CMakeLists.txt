@@ -28,3 +28,6 @@ target_compile_definitions(Kodi-Engine PRIVATE _CRT_SECURE_NO_WARNINGS=1)
 
 # Kodi Exceptions
 target_compile_definitions(Kodi-Engine PRIVATE KODI_THROW_EXCEPTIONS=1)
+
+
+# All the ints shall be int32_t

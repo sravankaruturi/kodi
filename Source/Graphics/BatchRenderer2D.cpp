@@ -69,15 +69,6 @@ namespace kodi {
 
 			glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, NULL);
 
-			GLenum error = glGetError();
-
-			if (error != GL_NO_ERROR) {
-				std::cout << "OpenGL Error : " << error << std::endl;
-			}
-
-#ifdef KODI_THROW_EXCEPTIONS
-			assert(error == GL_NO_ERROR);
-#endif
 
 			IBO->UnBind();
 			glBindVertexArray(0);

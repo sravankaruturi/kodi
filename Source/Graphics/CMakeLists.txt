@@ -14,6 +14,10 @@ FILE(GLOB GraphicsFiles
   "${CMAKE_CURRENT_LIST_DIR}/Sprite.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/StaticSprite.h"
   "${CMAKE_CURRENT_LIST_DIR}/StaticSprite.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/Layer.h"
+  "${CMAKE_CURRENT_LIST_DIR}/Layer.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/TileLayer.h"
+  "${CMAKE_CURRENT_LIST_DIR}/TileLayer.cpp"
 )
 
 target_sources(

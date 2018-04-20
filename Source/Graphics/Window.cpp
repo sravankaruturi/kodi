@@ -1,27 +1,44 @@
 #include "Window.h"
 #include <iostream>
-#include <assert.h>
+#include <cassert>
+#include "../Utils/GeneralUtils.h"
 
 namespace kodi {
 	namespace graphics {
 
 		void window_resize(GLFWwindow * _window, int width, int height);
 
-		Window::Window(const char * _title, int _width, int _height)
-			: title(_title), width(_width), height(_height)
+		/**
+		 * \brief 
+		 * \param _title 
+		 * \param _width 
+		 * \param _height 
+		 */
+		Window::Window(const char * _title, const int _width, int _height)
+			:  width(_width), height(_height)
 		{
+
+			title = std::string(_title);
 
 			if (!Init()) {
 				glfwTerminate();
 			}
 
-			for (int i = 0; i < MAX_KEYS; i++) {
-				keys[i] = false;
+			for (auto& key : keys)
+			{
+				key = false;
 			}
 
-			for (int i = 0; i < MAX_BUTTONS; i++) {
-				mouseButtons[i] = false;
+			for (auto& mouse_button : mouseButtons)
+			{
+				mouse_button = false;
 			}
+
+			/*Timing Stuff*/
+			numberOfFrames = 0;
+			currentTime = 0;
+			lastTime = 0;
+			/*Timing Stuff Ends*/
 
 		}
 
@@ -30,7 +47,7 @@ namespace kodi {
 			glfwTerminate();
 		}
 
-		bool Window::isKeyPressed(unsigned int _keyCode) const
+		bool Window::IsKeyPressed(const unsigned int _keyCode) const
 		{
 			// TODO: Log this.
 			if (_keyCode >= MAX_KEYS) {
@@ -40,7 +57,7 @@ namespace kodi {
 			return keys[_keyCode];
 		}
 
-		bool Window::isMouseButtonPressed(unsigned int _button) const
+		bool Window::IsMouseButtonPressed(unsigned int _button) const
 		{
 			// TODO: Log this.
 			if (_button >= MAX_BUTTONS) {
@@ -64,7 +81,7 @@ namespace kodi {
 				return false;
 			}
 
-			window = glfwCreateWindow(width, height, title, NULL, NULL);
+			window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
 
 			if (!window) {
 				std::cout << " Failed to Create GLFW window " << std::endl;
@@ -79,6 +96,8 @@ namespace kodi {
 			glfwSetWindowSizeCallback(window, window_resize);
 			glfwSetCursorPosCallback(window, cursor_position_callback);
 
+			glfwSwapInterval(0);
+
 			// Idhi contex windowki pettina tharuvaathe ikkada pettaali. Eelopoopedithe error vasthundhi.
 			if (glewInit() != GLEW_OK) {
 				std::cout << "Could not init GLEW" << std::endl;
@@ -89,15 +108,14 @@ namespace kodi {
 
 		}
 
-		void Window::clear() const
+		void Window::Clear()
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		}
 
 		void Window::Update()
 		{
-			
-			GLenum error = glGetError();
+			const auto error = glGetError();
 
 			if (error != GL_NO_ERROR) {
 				std::cout << "OpenGL Error : " << error << std::endl;
@@ -111,6 +129,18 @@ namespace kodi {
 
 			glfwSwapBuffers(window);
 
+			currentTime = glfwGetTime();
+
+			numberOfFrames++;
+
+			if ( currentTime - lastTime >= 1.0)
+			{
+				fpsString =  std::string("                      FPS: ") + utils::GeneralUtils::ToString<double>(numberOfFrames);
+				glfwSetWindowTitle(window, (title + fpsString).c_str());
+				numberOfFrames = 0;
+				lastTime = currentTime;
+			}
+			
 		}
 
 		bool Window::IsClosed() const
@@ -118,15 +148,15 @@ namespace kodi {
 			return glfwWindowShouldClose(window);
 		}
 
-		void window_resize(GLFWwindow * _window, int width, int height) {
-			glViewport(0, 0, width, height);
+		void window_resize(GLFWwindow * _window, int _width, int _height) {
+			glViewport(0, 0, _width, _height);
 		}
 
-		void key_callback(GLFWwindow * _window, int key, int scancode, int action, int mods) {
+		void key_callback(GLFWwindow * _window, int _key, int scancode, int action, int mods) {
 
-			Window * win = (Window *)glfwGetWindowUserPointer(_window);
+			const auto win = static_cast<Window *>(glfwGetWindowUserPointer(_window));
 
-			win->keys[key] = (GLFW_RELEASE != action);
+			win->keys[_key] = (GLFW_RELEASE != action);
 
 		}
 
@@ -140,7 +170,7 @@ namespace kodi {
 
 		void cursor_position_callback(GLFWwindow* _window, double _xpos, double _ypos) {
 
-			Window * win = (Window *)glfwGetWindowUserPointer(_window);
+			const auto win = static_cast<Window *>(glfwGetWindowUserPointer(_window));
 
 			win->mouseX = _xpos;
 			win->mouseY = _ypos;
