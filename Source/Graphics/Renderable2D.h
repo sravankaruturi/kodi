@@ -15,7 +15,8 @@ namespace kodi {
 		{
 			// TODO: Packing. Memory align avvaledhu tharuvaatha optimisatin chesetappudu manam ikkada packing kosam choodu.
 			vec3 vertex;
-			vec4 colour;
+			//vec4 colour;
+			unsigned int colour;
 		};
 
 		class Renderable2D {
