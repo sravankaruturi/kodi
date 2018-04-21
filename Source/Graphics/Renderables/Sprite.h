@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Renderable2D.h"
+#include "../Texture.h"
 
 namespace kodi {
 	namespace graphics {
@@ -11,6 +12,7 @@ namespace kodi {
 
 		public:
 			Sprite(float _x, float _y, float _width, float _height, const vec4& _colour);
+			Sprite(float _x, float _y, float _width, float _height, const vec4& _colour, Texture * _texture);
 
 		};
 

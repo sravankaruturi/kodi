@@ -36,7 +36,7 @@ include(${PROJECT_SOURCE_DIR}/librarybinaries/CMakeLists.txt)
 
 ################### Preprocessor Definitions ###################
 target_compile_definitions(Kodi-Engine PRIVATE _CRT_SECURE_NO_WARNINGS=1)
-target_compile_definitions(Kodi-Engine PRIVATE KODI_THROW_EXCEPTIONS=1)
+target_compile_definitions(Kodi-Engine PRIVATE KODI_THROW_EXCEPTIONS=0)
 
 
 ################### Documentation / Specification ###################

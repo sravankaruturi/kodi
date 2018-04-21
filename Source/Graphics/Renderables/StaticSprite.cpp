@@ -10,11 +10,18 @@ namespace kodi {
 
 			vertexArray = new VertexArray();
 
+			//GLfloat vertices[] = {
+			//	-size.x/2,		-size.y/2,		0,
+			//	-size.x/2,		size.y/2,		0,
+			//	size.x/2,		size.y/2,		0,
+			//	size.x/2,		-size.y/2,		0,
+			//};
+
 			GLfloat vertices[] = {
-				0,			0,			0,
-				0,			size.y,		0,
-				size.x,		size.y,		0,
-				size.x,		0,			0,
+				0,			0,		0,
+				0,		size.y,		0,
+				size.x,	size.y,		0,
+				size.x,		0,		0	
 			};
 
 			GLfloat colours[] = {

@@ -121,7 +121,7 @@ namespace kodi {
 				std::cout << "OpenGL Error : " << error << std::endl;
 			}
 
-#ifdef KODI_THROW_EXCEPTIONS
+#if KODI_THROW_EXCEPTIONS
 			assert(error == GL_NO_ERROR);
 #endif
 

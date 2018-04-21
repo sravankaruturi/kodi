@@ -7,6 +7,7 @@
 #include "../Shader.h"
 
 #include "../Renderers/Renderer2D.h"
+#include "../Texture.h"
 
 using namespace kodi::math;
 
@@ -19,7 +20,7 @@ namespace kodi {
 			vec3 vertex;
 			unsigned int colour;
 			vec2 texCoord;
-			//vec4 colour;
+			float tSlot;
 		};
 
 		class Renderable2D {
@@ -28,6 +29,9 @@ namespace kodi {
 			vec3 position;
 			vec2 size;
 			vec4 colour;
+			// GLuint textureID;	// Manaku idhi pointer kanna chinnadhi. Thakkuva space theesukontundhi.
+			// Manam ikkada okokka renderable kee oka texture maathrame vuntundhani assume chesukontunnamu.
+			Texture * texture;
 
 		protected:
 
@@ -35,8 +39,8 @@ namespace kodi {
 
 		public:
 
-			Renderable2D(vec3 _position, vec2 _size, vec4 _colour)
-				: position(_position), size(_size), colour(_colour)
+			Renderable2D(vec3 _position, vec2 _size, vec4 _colour, Texture * _texture = nullptr)
+				: position(_position), size(_size), colour(_colour), texture(_texture)
 			{	
 			}
 
@@ -53,6 +57,7 @@ namespace kodi {
 			inline const vec3& GetPosition() const { return position; }
 			inline const vec2& GetSize() const { return size; }
 			inline const vec4& GetColour() const { return colour; }
+			inline const GLuint& GetTexID() const { return (nullptr == texture) ? 0 : texture->getTextureID(); }
 
 		};
 

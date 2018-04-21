@@ -12,13 +12,13 @@
 #include <cassert>
 
 #include "Graphics/Layers/Group.h"
-#include "Graphics/Texture.h"
 #include "Graphics/Renderers/Simple2DRenderer.h"
 
-#define STRESS_TEST		0
-#define LAYER_TEST		0
-#define ROTATE_TEST		0
-#define TEXTURE_TEST	1
+#define STRESS_TEST			0
+#define LAYER_TEST			0
+#define ROTATE_TEST			0
+#define TEXTURE_TEST		0
+#define TEXTURE_BATCH_TEST	1
 
 using namespace kodi;
 using namespace graphics;
@@ -78,21 +78,6 @@ int main()
 	group1->AddRenderable(button);
 
 	tile_layer.Add(group1);
-
-#elif ROTATE_TEST
-
-	Sprite * sprite = new Sprite(0, 0, 2, 2, vec4(1, 1, 0, 1));
-	Texture t(std::string(
-		"C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Assets/Textures/container.jpg"
-	));
-
-	shader->Enable();
-	shader->setMat4("ml_matrix", mat4::rotation(45, vec3(0, 0, 1)));
-	tile_layer.Add(sprite);
-
-	Simple2DRenderer simple;
-	auto textureTest = new StaticSprite(0, 0, 8, 6, vec4(1, 0, 1, 1), *shader);
-	
 
 #endif
 
@@ -176,6 +161,54 @@ int main()
 
 		window.Update();
 
+		if (window.IsKeyPressed(GLFW_KEY_ESCAPE)) 
+		{
+			break;
+		}
+	}
+
+	delete shader;
+}
+#endif
+
+#if ROTATE_TEST
+int main()
+{
+
+	Window window("Kodi", 960, 540);
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
+	Shader* shader = new Shader("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/Shaders/basic.vert",
+		"C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/Shaders/basic.frag");
+
+	shader->Enable();
+
+	Sprite * sprite = new Sprite(0, 0, 2, 2, vec4(1, 1, 0, 1));
+
+	shader->Enable();
+	shader->setMat4("ml_matrix", mat4::translation(vec3(2, 0, 0)) * mat4::rotation(45, vec3(0, 0, 1)));
+
+	TileLayer tile_layer(shader);
+	tile_layer.Add(sprite);
+
+	while (!window.IsClosed())
+	{
+		Window::Clear();
+
+		shader->Enable();
+		// shader->setMat4("ml_matrix", mat4::translation(vec3(sin(glfwGetTime()) * 5, 0, 0)) * mat4::rotation(cos(glfwGetTime()) * 180, vec3(0, 0, 1)) );
+
+		tile_layer.Render();
+
+		double x, y;
+		window.GetMousePosition(x, y);
+		if (x > 0 && y > 0 && x < 2000 && y < 2000)
+		{
+			shader->setVec2("light_pos", vec2(static_cast<float>(x * 32.0f / 960.0f - 16.0f), static_cast<float>(9.0f - y * 18.0f / 540.0f)));
+		}
+
+		window.Update();
+
 		if (window.IsKeyPressed(GLFW_KEY_ESCAPE))
 		{
 			break;
@@ -183,5 +216,94 @@ int main()
 	}
 
 	delete shader;
+}
+#endif
+
+#if TEXTURE_BATCH_TEST
+int main()
+{
+	Window window("Kodi", 960, 540);
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
+	std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
+
+	const auto projectionMatrix = mat4::orthographic(-16.0, 16, -9, 9, -1, 1);
+
+	Shader* shader = new Shader("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/Shaders/batchTexture.vert",
+		"C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/Shaders/batchTexture.frag");
+
+	Texture * textures[] = {
+		new Texture("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Assets/Textures/container.jpg"),
+		new Texture("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Assets/Textures/awesomeface.png")
+	};
+
+	auto tile_layer = new TileLayer(shader);
+
+	srand(time(nullptr));
+
+	const auto y_max = 9 * 2;
+	const auto x_max = 16 * 2;
+	for (auto y = 0; y < y_max; y++)
+	{
+		for (auto x = 0; x < x_max; x++)
+		{
+			if (rand() % 4 == 0) {
+				tile_layer->Add(new Sprite(
+					float(x - x_max / 2),
+					float(y - y_max / 2),
+					0.9f,
+					0.9f,
+					vec4(1, 0, 0, 1)));
+			}
+			else
+			{
+				tile_layer->Add(new Sprite(
+					float(x - x_max / 2),
+					float(y - y_max / 2),
+					0.9f,
+					0.9f,
+					vec4(1, 0, 0, 1), textures[rand() % 2])
+				);
+			}
+		}
+	}
+
+	GLint texIDs[] =
+	{
+		0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+	};
+
+	shader->Enable();
+	shader->SetIntArray("textures", 10, texIDs);
+	shader->setMat4("pr_matrix", projectionMatrix);
+
+	while (!window.IsClosed())
+	{
+		Window::Clear();
+
+		tile_layer->Render();
+
+		double x, y;
+		window.GetMousePosition(x, y);
+		if (x > 0 && y > 0 && x < 2000 && y < 2000)
+		{
+			shader->setVec2("light_pos", vec2(static_cast<float>(x * 32.0f / window.GetWidth() - 16.0f), static_cast<float>(9.0f - y * 18.0f / window.GetHeight())));
+		}
+
+		window.Update();
+
+		if (window.IsKeyPressed(GLFW_KEY_ESCAPE))
+		{
+			break;
+		}
+	}
+
+	delete tile_layer;
+	delete shader;
+
+	for ( auto iterator: textures)
+	{
+		delete iterator;
+	}
 }
 #endif

@@ -3,6 +3,7 @@
 #include "../Utils/fileUtils.h"
 #include <GL/glew.h>
 #include "../Math/Math.h"
+#include <cassert>
 
 namespace kodi {
 	namespace graphics {
@@ -38,6 +39,18 @@ namespace kodi {
 			{
 				glUniform1i(glGetUniformLocation(shaderID, name.c_str()), value);
 			}
+
+			void SetIntArray(const std::string& _name, int _count, int* _value) const
+			{
+				auto l = glGetUniformLocation(shaderID, _name.c_str());
+				glUniform1iv(l, _count, _value);
+			}
+
+			void SetFloatArray(const std::string& _name, int _count, float* _value) const
+			{
+				glUniform1fv(glGetUniformLocation(shaderID, _name.c_str()), _count, _value);
+			}
+
 			// ------------------------------------------------------------------------
 			void setFloat(const std::string &name, float value) const
 			{

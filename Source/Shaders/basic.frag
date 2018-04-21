@@ -16,6 +16,6 @@ float ambience = 0.2;
 void main()
 {
 	float intensity = 1.0 / length(fs_in.position.xy - light_pos);
-	colour = ( fs_in.colour * 0.2 + texture(texture0, fs_in.texcoord)) * ( intensity + ambience ) ;
+	colour = ( fs_in.colour * 0.0 + texture(texture0, fs_in.texcoord)) * ( intensity + ambience ) ;
 	// colour = fs_in.colour;
 }

@@ -17,6 +17,8 @@ namespace kodi {
 
 #define SHADER_VERTEX_INDEX			0
 #define SHADER_COLOUR_INDEX			1
+#define SHADER_TEXCOORD_INDEX		2
+#define SHADER_TEXID_INDEX			3
 
 		class BatchRenderer2D : public Renderer2D {
 
@@ -29,6 +31,8 @@ namespace kodi {
 			GLsizei	indexCount;
 			
 			VertexData * buffer;
+
+			std::vector<GLuint> textureSlots;
 
 		public:
 

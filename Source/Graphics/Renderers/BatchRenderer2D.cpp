@@ -26,34 +26,78 @@ namespace kodi {
 			const vec2& size		= _renderable->GetSize();
 			const vec4& colour		= _renderable->GetColour();
 
-			auto r = int(colour.x * 255);
-			auto g = int(colour.y * 255);
-			auto b = int(colour.z * 255);
-			auto a = int(colour.w * 255);
+			const GLuint tid = _renderable->GetTexID();
 
-			unsigned int c = a << 24 | b << 16 | g << 8 | r;
+			unsigned int c = 0;
+			float tslot = 0.0f;
+			if ( tid > 0)
+			{
+				bool found = false;
+				for (int i = 0; i < textureSlots.size(); i++)
+				{
+					if ( tid == textureSlots[i] )
+					{
+						tslot = (float)i + 1;
+						found = true;
+						break;
+					}
+				}
 
+				if (!found)
+				{
+					if ( textureSlots.size() >= 32)
+					{
+						End();
+						Flush();
+						Begin();
+					}
+
+					// Ikkada else pettakapothe paruvaaleidhaa?
+
+					textureSlots.push_back(tid);
+					tslot = float(textureSlots.size());
+				}
+
+			}else
+			{
+				auto r = int(colour.x * 255);
+				auto g = int(colour.y * 255);
+				auto b = int(colour.z * 255);
+				auto a = int(colour.w * 255);
+
+				c = a << 24 | b << 16 | g << 8 | r;
+			}
+			
 			// First Vertex.
 			buffer->vertex	= *transformationStackBack * position;
 			buffer->colour = c;
+			buffer->texCoord = vec2(0, 0);
+			buffer->tSlot = tslot;
 			buffer++;
 
 			// Rendava Chukka
 			buffer->vertex = *transformationStackBack * vec3(position.x, position.y + size.y, position.z);
 			buffer->colour = c;
+			buffer->texCoord = vec2(0, 1);
+			buffer->tSlot = tslot;
 			buffer++;
 
 			// Moodava Chukka
 			buffer->vertex = *transformationStackBack * vec3(position.x + size.x, position.y + size.y, position.z);
 			buffer->colour = c;
+			buffer->texCoord = vec2(1, 1);
+			buffer->tSlot = tslot;
 			buffer++;
 
 			// Naalugava Chukka
 			buffer->vertex = *transformationStackBack * vec3(position.x + size.x, position.y, position.z);
 			buffer->colour = c;
+			buffer->texCoord = vec2(1, 0);
+			buffer->tSlot = tslot;
 			buffer++;
 
 			indexCount += 6;
+
 		}
 
 		void BatchRenderer2D::Begin()
@@ -73,6 +117,13 @@ namespace kodi {
 		void BatchRenderer2D::Flush()
 		{
 			glBindVertexArray(VAO);
+
+			for ( int i = 0 ; i < textureSlots.size(); i++)
+			{
+				// Definitionlo GL_TEXTURE0 tharuvaatha annee varusaga vunnayi.
+				glActiveTexture(GL_TEXTURE0 + i);
+				glBindTexture(GL_TEXTURE_2D, textureSlots[i]);
+			}
 
 			IBO->Bind();
 
@@ -101,10 +152,14 @@ namespace kodi {
 
 			glEnableVertexAttribArray(SHADER_VERTEX_INDEX);
 			glEnableVertexAttribArray(SHADER_COLOUR_INDEX);
+			glEnableVertexAttribArray(SHADER_TEXCOORD_INDEX);
+			glEnableVertexAttribArray(SHADER_TEXID_INDEX);
 
 			// glVertexAttribPointer(SHADER_VERTEX_INDEX, 3 * sizeof(GLfloat), GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), 0);
 			glVertexAttribPointer(SHADER_VERTEX_INDEX, 3 , GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid *)0);
 			glVertexAttribPointer(SHADER_COLOUR_INDEX, 4, GL_UNSIGNED_BYTE, GL_TRUE, RENDERER_VERTEX_SIZE, (const GLvoid*)offsetof(VertexData, VertexData::colour));
+			glVertexAttribPointer(SHADER_TEXCOORD_INDEX, 2, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)offsetof(VertexData, VertexData::texCoord));
+			glVertexAttribPointer(SHADER_TEXID_INDEX, 1, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)offsetof(VertexData, VertexData::tSlot));
 
 			// Binding inkaa Unbinidng chaala ekkuva performance hits isthaayi.
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
