@@ -11,6 +11,13 @@ namespace kodi
 #define	MAX_KEYS		1024
 #define MAX_BUTTONS		16
 
+		enum keyBool
+		{
+			keyPressed,
+			keyHeld,
+			keyReleased
+		};
+
 		class Window
 		{
 		private:
@@ -60,6 +67,8 @@ namespace kodi
 
 		private:
 			bool Init();
+
+			static friend void window_resize(GLFWwindow * _window, int _width, int _height);
 
 			static friend void key_callback(GLFWwindow* _window, int _key, int scancode, int action, int mods);
 

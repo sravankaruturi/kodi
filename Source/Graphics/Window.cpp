@@ -6,8 +6,6 @@
 namespace kodi {
 	namespace graphics {
 
-		void window_resize(GLFWwindow * _window, int width, int height);
-
 		/**
 		 * \brief 
 		 * \param _title 
@@ -149,28 +147,40 @@ namespace kodi {
 		}
 
 		void window_resize(GLFWwindow * _window, int _width, int _height) {
+
+			auto win = static_cast<Window *>(glfwGetWindowUserPointer(_window));
+
+			win->width = win->GetWidth();
+			win->height = win->GetHeight();
+
 			glViewport(0, 0, _width, _height);
 		}
 
 		void key_callback(GLFWwindow * _window, int _key, int scancode, int action, int mods) {
 
-			const auto win = static_cast<Window *>(glfwGetWindowUserPointer(_window));
+			auto win = static_cast<Window *>(glfwGetWindowUserPointer(_window));
 
-			win->keys[_key] = (GLFW_RELEASE != action);
-
+			win->keys[_key] =  (GLFW_RELEASE != action);
+			// win->keys[_key] = (GLFW_RELEASE == action) ? keyBool::keyReleased : (GLFW_PRESS
 		}
 
 		void mouse_button_callback(GLFWwindow* _window, int _button, int _action, int _mods) {
 
-			Window * win = (Window *)glfwGetWindowUserPointer(_window);
+			auto * win = (Window *)glfwGetWindowUserPointer(_window);
 			
 			win->mouseButtons[_button] = (GLFW_RELEASE != _action);
 
 		}
 
+		/**
+		 * \brief 
+		 * \param _window 
+		 * \param _xpos 
+		 * \param _ypos 
+		 */
 		void cursor_position_callback(GLFWwindow* _window, double _xpos, double _ypos) {
 
-			const auto win = static_cast<Window *>(glfwGetWindowUserPointer(_window));
+			auto win = static_cast<Window *>(glfwGetWindowUserPointer(_window));
 
 			win->mouseX = _xpos;
 			win->mouseY = _ypos;

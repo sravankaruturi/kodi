@@ -227,9 +227,9 @@ int main()
 
 	std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 
-	const auto projectionMatrix = mat4::orthographic(-16.0, 16, -9, 9, -1, 1);
+	const auto projection_matrix = mat4::orthographic(-16.0, 16, -9, 9, -1, 1);
 
-	Shader* shader = new Shader("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/Shaders/batchTexture.vert",
+	auto shader = new Shader("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/Shaders/batchTexture.vert",
 		"C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/Shaders/batchTexture.frag");
 
 	Texture * textures[] = {
@@ -249,8 +249,8 @@ int main()
 		{
 			if (rand() % 4 == 0) {
 				tile_layer->Add(new Sprite(
-					float(x - x_max / 2),
-					float(y - y_max / 2),
+					(x - x_max / 2.0f),
+					(y - y_max / 2.0f),
 					0.9f,
 					0.9f,
 					vec4(1, 0, 0, 1)));
@@ -258,8 +258,8 @@ int main()
 			else
 			{
 				tile_layer->Add(new Sprite(
-					float(x - x_max / 2),
-					float(y - y_max / 2),
+					(x - x_max / 2.0f),
+					(y - y_max / 2.0f),
 					0.9f,
 					0.9f,
 					vec4(1, 0, 0, 1), textures[rand() % 2])
@@ -275,14 +275,25 @@ int main()
 
 	shader->Enable();
 	shader->SetIntArray("textures", 10, texIDs);
-	shader->setMat4("pr_matrix", projectionMatrix);
+	shader->setMat4("pr_matrix", projection_matrix);
 
 	while (!window.IsClosed())
 	{
 		Window::Clear();
 
+		/* Update Stuff */
+		for ( auto iterator: tile_layer->GetRenderables())
+		{
+			iterator->SetColour(vec4(sin(glfwGetTime() + 1)/2, 0, 1, 0));
+		}
+
+
+		/* Render Stuff */
+
 		tile_layer->Render();
 
+
+		/* Input Stuff */
 		double x, y;
 		window.GetMousePosition(x, y);
 		if (x > 0 && y > 0 && x < 2000 && y < 2000)

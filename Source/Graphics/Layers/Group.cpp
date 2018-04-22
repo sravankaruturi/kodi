@@ -9,6 +9,15 @@ namespace kodi
 
 		}
 
+		Group::~Group()
+		{
+			// Manam add chesina renderablesni annitinee delete cheyyaali.
+			for (auto iterator : renderables)
+			{
+				delete iterator;
+			}
+		}
+
 		void Group::SubmitToRenderer(Renderer2D* _renderer) const
 		{
 			_renderer->PushToTransformationStack(transformationMatrix);

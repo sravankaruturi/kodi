@@ -28,7 +28,7 @@ namespace kodi {
 		protected:
 			vec3 position;
 			vec2 size;
-			vec4 colour;
+			unsigned int colour;
 			// GLuint textureID;	// Manaku idhi pointer kanna chinnadhi. Thakkuva space theesukontundhi.
 			// Manam ikkada okokka renderable kee oka texture maathrame vuntundhani assume chesukontunnamu.
 			Texture * texture;
@@ -39,9 +39,27 @@ namespace kodi {
 
 		public:
 
-			Renderable2D(vec3 _position, vec2 _size, vec4 _colour, Texture * _texture = nullptr)
+			Renderable2D(vec3 _position, vec2 _size, unsigned int _colour, Texture * _texture = nullptr)
 				: position(_position), size(_size), colour(_colour), texture(_texture)
 			{	
+			}
+
+			Renderable2D(vec3 _position, vec2 _size, vec4 _colour, Texture * _texture = nullptr)
+				: position(_position), size(_size), texture(_texture)
+			{
+				SetColour(_colour);
+			}
+
+			void SetColour(vec4 _colour)
+			{
+				unsigned int c = 0;
+				auto r = int(_colour.x * 255);
+				auto g = int(_colour.y * 255);
+				auto b = int(_colour.z * 255);
+				auto a = int(_colour.w * 255);
+				c = a << 24 | b << 16 | g << 8 | r;
+
+				this->colour = c;
 			}
 
 			~Renderable2D()
@@ -56,7 +74,7 @@ namespace kodi {
 
 			inline const vec3& GetPosition() const { return position; }
 			inline const vec2& GetSize() const { return size; }
-			inline const vec4& GetColour() const { return colour; }
+			inline const unsigned int& GetColour() const { return colour; }
 			inline const GLuint& GetTexID() const { return (nullptr == texture) ? 0 : texture->getTextureID(); }
 
 		};

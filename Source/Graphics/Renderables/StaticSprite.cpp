@@ -25,10 +25,10 @@ namespace kodi {
 			};
 
 			GLfloat colours[] = {
-				colour.x, colour.y, colour.z, colour.w,
-				colour.x, colour.y, colour.z, colour.w,
-				colour.x, colour.y, colour.z, colour.w,
-				colour.x, colour.y, colour.z, colour.w
+				colour,
+				colour,
+				colour,
+				colour
 			};
 
 			GLfloat texcoord[] = {
@@ -39,7 +39,7 @@ namespace kodi {
 			};
 
 			vertexBuffer = new Buffer(vertices, 12, 3);
-			colourBuffer = new Buffer(colours, 16, 4);
+			colourBuffer = new Buffer(colours, 4, 4);
 			auto texCoordBuffer = new Buffer(texcoord, 8, 2);
 
 			vertexArray->AddBuffer(vertexBuffer, 0);

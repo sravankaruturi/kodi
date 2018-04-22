@@ -29,11 +29,11 @@ namespace kodi {
 
 			const vec3& position	= _renderable->GetPosition();
 			const vec2& size		= _renderable->GetSize();
-			const vec4& colour		= _renderable->GetColour();
+			auto colour		= _renderable->GetColour();
 
 			const GLuint tid = _renderable->GetTexID();
 
-			unsigned int c = 0;
+			
 			float tslot = 0.0f;
 			if ( tid > 0)
 			{
@@ -65,38 +65,33 @@ namespace kodi {
 
 			}else
 			{
-				auto r = int(colour.x * 255);
-				auto g = int(colour.y * 255);
-				auto b = int(colour.z * 255);
-				auto a = int(colour.w * 255);
-
-				c = a << 24 | b << 16 | g << 8 | r;
+				
 			}
 			
 			// First Vertex.
 			buffer->vertex	= *transformationStackBack * position;
-			buffer->colour = c;
+			buffer->colour = colour;
 			buffer->texCoord = bottom_left;
 			buffer->tSlot = tslot;
 			buffer++;
 
 			// Rendava Chukka
 			buffer->vertex = *transformationStackBack * vec3(position.x, position.y + size.y, position.z);
-			buffer->colour = c;
+			buffer->colour = colour;
 			buffer->texCoord = top_left;
 			buffer->tSlot = tslot;
 			buffer++;
 
 			// Moodava Chukka
 			buffer->vertex = *transformationStackBack * vec3(position.x + size.x, position.y + size.y, position.z);
-			buffer->colour = c;
+			buffer->colour = colour;
 			buffer->texCoord = top_right;
 			buffer->tSlot = tslot;
 			buffer++;
 
 			// Naalugava Chukka
 			buffer->vertex = *transformationStackBack * vec3(position.x + size.x, position.y, position.z);
-			buffer->colour = c;
+			buffer->colour = colour;
 			buffer->texCoord = bottom_right;
 			buffer->tSlot = tslot;
 			buffer++;

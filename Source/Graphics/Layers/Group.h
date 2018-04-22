@@ -13,7 +13,11 @@ namespace kodi
 			math::mat4 transformationMatrix;
 
 		public:
+
 			Group();
+
+			~Group();
+
 			void SubmitToRenderer(Renderer2D* _renderer) const override;
 
 			void SetTransformMatrix(const mat4& _transformMatrix) { transformationMatrix = _transformMatrix; };

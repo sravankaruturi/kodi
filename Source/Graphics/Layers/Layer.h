@@ -31,6 +31,8 @@ namespace kodi
 
 			inline uint32_t GetSpriteCount() const { return renderables.size(); };
 
+			std::vector<Renderable2D *> GetRenderables() { return renderables; };
+
 		};
 
 	}
