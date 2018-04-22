@@ -6,6 +6,11 @@
 namespace kodi {
 	namespace graphics {
 
+		const vec2& bottom_left = vec2(0, 0);
+		const vec2& bottom_right = vec2(1, 0);
+		const vec2& top_left = vec2(0, 1);
+		const vec2& top_right = vec2(1, 1);
+
 		BatchRenderer2D::BatchRenderer2D()
 		{
 			Init();
@@ -71,28 +76,28 @@ namespace kodi {
 			// First Vertex.
 			buffer->vertex	= *transformationStackBack * position;
 			buffer->colour = c;
-			buffer->texCoord = vec2(0, 0);
+			buffer->texCoord = bottom_left;
 			buffer->tSlot = tslot;
 			buffer++;
 
 			// Rendava Chukka
 			buffer->vertex = *transformationStackBack * vec3(position.x, position.y + size.y, position.z);
 			buffer->colour = c;
-			buffer->texCoord = vec2(0, 1);
+			buffer->texCoord = top_left;
 			buffer->tSlot = tslot;
 			buffer++;
 
 			// Moodava Chukka
 			buffer->vertex = *transformationStackBack * vec3(position.x + size.x, position.y + size.y, position.z);
 			buffer->colour = c;
-			buffer->texCoord = vec2(1, 1);
+			buffer->texCoord = top_right;
 			buffer->tSlot = tslot;
 			buffer++;
 
 			// Naalugava Chukka
 			buffer->vertex = *transformationStackBack * vec3(position.x + size.x, position.y, position.z);
 			buffer->colour = c;
-			buffer->texCoord = vec2(1, 0);
+			buffer->texCoord = bottom_right;
 			buffer->tSlot = tslot;
 			buffer++;
 
