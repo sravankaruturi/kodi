@@ -19,6 +19,7 @@ add_executable(Kodi-Engine "")
 
 ################### Include Directories ###################
 target_include_directories(Kodi-Engine PRIVATE ${PROJECT_SOURCE_DIR}/includes/)
+# target_include_directories(Kodi-Engine PRIVATE ${PROJECT_SOURCE_DIR}/includes/Freetype/)
 include_directories("${PROJECT_BINARY_DIR}")
 
 
@@ -30,9 +31,7 @@ include(Source/Graphics/Renderables/CMakeLists.txt)
 include(Source/Graphics/Renderers/CMakeLists.txt)
 include(${PROJECT_SOURCE_DIR}/librarybinaries/CMakeLists.txt)
 
-
-
-
+include(Game/CMakeLists.txt)
 
 ################### Preprocessor Definitions ###################
 target_compile_definitions(Kodi-Engine PRIVATE _CRT_SECURE_NO_WARNINGS=1)

@@ -1,3 +1,6 @@
+#define ENGINE_DEMO 1
+#if ENGINE_DEMO
+
 #include "Graphics/Window.h"
 #include <iostream>
 #include "Math/Math.h"
@@ -249,8 +252,8 @@ int main()
 		{
 			if (rand() % 4 == 0) {
 				tile_layer->Add(new Sprite(
-					(x - x_max / 2.0f),
-					(y - y_max / 2.0f),
+					(x - x_max / 2.0f) + 0.475f,
+					(y - y_max / 2.0f) + 0.475f,
 					0.9f,
 					0.9f,
 					vec4(1, 0, 0, 1)));
@@ -258,8 +261,8 @@ int main()
 			else
 			{
 				tile_layer->Add(new Sprite(
-					(x - x_max / 2.0f),
-					(y - y_max / 2.0f),
+					(x - x_max / 2.0f) + 0.475f,
+					(y - y_max / 2.0f) + 0.475f,
 					0.9f,
 					0.9f,
 					vec4(1, 0, 0, 1), textures[rand() % 2])
@@ -317,4 +320,6 @@ int main()
 		delete iterator;
 	}
 }
+#endif
+
 #endif

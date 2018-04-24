@@ -19,15 +19,13 @@ namespace kodi
 			Shader * shader;
 			mat4 projectionMatrix;
 
-		protected:
-
-			Layer(Renderer2D* _renderer, Shader * _shader, mat4 _projectionMatrix);
-
 		public:
 
 			virtual ~Layer();
 			virtual void Add(Renderable2D * _renderable);
 			virtual void Render();
+
+			Layer(Renderer2D* _renderer, Shader * _shader, mat4 _projectionMatrix);
 
 			inline uint32_t GetSpriteCount() const { return renderables.size(); };
 

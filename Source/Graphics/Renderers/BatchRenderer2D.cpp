@@ -67,7 +67,9 @@ namespace kodi {
 			{
 				
 			}
-			
+
+#if 0
+
 			// First Vertex.
 			buffer->vertex	= *transformationStackBack * position;
 			buffer->colour = colour;
@@ -95,6 +97,37 @@ namespace kodi {
 			buffer->texCoord = bottom_right;
 			buffer->tSlot = tslot;
 			buffer++;
+
+#else
+			// First Vertex.
+			buffer->vertex = *transformationStackBack * vec3(position.x - size.x/2, position.y - size.y/2, position.z);
+			buffer->colour = colour;
+			buffer->texCoord = bottom_left;
+			buffer->tSlot = tslot;
+			buffer++;
+
+			// Rendava Chukka
+			buffer->vertex = *transformationStackBack * vec3(position.x - size.x/2, position.y + size.y/2, position.z);
+			buffer->colour = colour;
+			buffer->texCoord = top_left;
+			buffer->tSlot = tslot;
+			buffer++;
+
+			// Moodava Chukka
+			buffer->vertex = *transformationStackBack * vec3(position.x + size.x/2, position.y + size.y/2, position.z);
+			buffer->colour = colour;
+			buffer->texCoord = top_right;
+			buffer->tSlot = tslot;
+			buffer++;
+
+			// Naalugava Chukka
+			buffer->vertex = *transformationStackBack * vec3(position.x + size.x/2, position.y - size.y/2, position.z);
+			buffer->colour = colour;
+			buffer->texCoord = bottom_right;
+			buffer->tSlot = tslot;
+			buffer++;
+
+#endif
 
 			indexCount += 6;
 
