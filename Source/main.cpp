@@ -11,21 +11,29 @@
 
 #include "Utils/Timer.h"
 
-#include "Graphics/Layers/TileLayer.h"
+#include "TileLayer.h"
 #include <cassert>
 
 #include "Graphics/Layers/Group.h"
-#include "Graphics/Renderers/Simple2DRenderer.h"
 
 #define STRESS_TEST			0
 #define LAYER_TEST			0
 #define ROTATE_TEST			0
 #define TEXTURE_TEST		0
-#define TEXTURE_BATCH_TEST	1
+#define TEXTURE_BATCH_TEST	0
+#define GAME_TEST			1
 
 using namespace kodi;
 using namespace graphics;
 using namespace math;
+
+#include "../Game/Game.cpp"
+
+#if _WINDOWS
+#define _CRTDBG_MAP_ALLOC  
+#include <cstdlib>
+#include <crtdbg.h>  
+#endif
 
 #if STRESS_TEST
 
@@ -225,6 +233,11 @@ int main()
 #if TEXTURE_BATCH_TEST
 int main()
 {
+
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
+
+
 	Window window("Kodi", 960, 540);
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
@@ -321,5 +334,18 @@ int main()
 	}
 }
 #endif
+
+#if GAME_TEST
+int main()
+{
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
+
+	Game g;
+	g.Start();
+	return 0;
+}
+#endif
+
 
 #endif

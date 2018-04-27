@@ -2,15 +2,14 @@
 
 include("${CMAKE_CURRENT_LIST_DIR}/Shaders/CMakeLists.txt")
 
-FILE(GLOB TetrisGame
+FILE(GLOB GameFiles
   "${CMAKE_CURRENT_LIST_DIR}/main.cpp"
-  "${CMAKE_CURRENT_LIST_DIR}/TetrisGame.cpp"
-  "${CMAKE_CURRENT_LIST_DIR}/TetrisGame.h"
+  "${CMAKE_CURRENT_LIST_DIR}/Game.cpp"
 )
 
 target_sources(
 Kodi-Engine PUBLIC
-  ${TetrisGame}
+  ${GameFiles}
 )
 
-source_group("TetrisGame" FILES ${TetrisGame})
+source_group("Game" FILES ${GameFiles})

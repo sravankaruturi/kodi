@@ -50,7 +50,7 @@ namespace kodi {
 
 				if (!found)
 				{
-					if ( textureSlots.size() >= 32)
+					if ( textureSlots.size() >= RENDERER_MAX_TEXTURES)
 					{
 						End();
 						Flush();
@@ -167,6 +167,7 @@ namespace kodi {
 			glBindVertexArray(0);
 
 			indexCount = 0;
+			textureSlots.clear();
 
 		}
 

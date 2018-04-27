@@ -68,13 +68,10 @@ namespace kodi
 		private:
 			bool Init();
 
-			static friend void window_resize(GLFWwindow * _window, int _width, int _height);
-
-			static friend void key_callback(GLFWwindow* _window, int _key, int scancode, int action, int mods);
-
-			static friend void mouse_button_callback(GLFWwindow* _window, int _button, int _action, int _mods);
-
-			static friend void cursor_position_callback(GLFWwindow* _window, double _xpos, double _ypos);
+			friend void window_resize(GLFWwindow * _window, int _width, int _height);
+			friend void key_callback(GLFWwindow* _window, int _key, int scancode, int action, int mods);
+			friend void mouse_button_callback(GLFWwindow* _window, int _button, int _action, int _mods);
+			friend void cursor_position_callback(GLFWwindow* _window, double _xpos, double _ypos);
 		};
 	}
 }

@@ -12,7 +12,7 @@ namespace kodi {
 
 		public:
 			Sprite(float _x, float _y, float _width, float _height, const vec4& _colour);
-			Sprite(float _x, float _y, float _width, float _height, const vec4& _colour, Texture * _texture);
+			Sprite(float _x, float _y, float _width, float _height, Texture * _texture);
 
 		};
 

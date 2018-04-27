@@ -25,8 +25,11 @@ namespace kodi {
 
 		class Renderable2D {
 
-		protected:
+		public:
 			vec3 position;
+
+		protected:
+			
 			vec2 size;
 			unsigned int colour;
 			// GLuint textureID;	// Manaku idhi pointer kanna chinnadhi. Thakkuva space theesukontundhi.

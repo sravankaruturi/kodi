@@ -9,8 +9,8 @@ namespace kodi {
 		{
 		}
 
-		Sprite::Sprite(float _x, float _y, float _width, float _height, const vec4 & _colour, Texture * _texture)
-			: Renderable2D(vec3(_x, _y, 0), vec2(_width, _height), _colour, _texture)
+		Sprite::Sprite(float _x, float _y, float _width, float _height, Texture * _texture)
+			: Renderable2D(vec3(_x, _y, 0), vec2(_width, _height), 0xffffffff, _texture)
 		{
 		}
 	}

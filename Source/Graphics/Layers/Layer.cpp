@@ -1,4 +1,5 @@
 ﻿#include "Layer.h"
+#include "../Renderers/BatchRenderer2D.h"
 
 namespace kodi
 {
@@ -9,6 +10,14 @@ namespace kodi
 		{
 			shader->Enable();
 			shader->setMat4("pr_matrix", projectionMatrix);
+
+			GLint tex_ids[RENDERER_MAX_TEXTURES];
+			for ( auto i = 0 ; i < RENDERER_MAX_TEXTURES ; i++)
+			{
+				tex_ids[i] = i;
+			}
+			shader->SetIntArray("textures",  RENDERER_MAX_TEXTURES, tex_ids);
+
 			shader->Disable();
 		}
 
