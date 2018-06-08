@@ -1,6 +1,11 @@
 #pragma once
 
-#include <GL/glew.h>
+#if EMSCRIPTEN
+	#define GLFW_INCLUDE_ES3
+#else
+	#include <GL/glew.h>
+#endif
+
 #include <GLFW/glfw3.h>
 #include <string>
 
@@ -13,9 +18,9 @@ namespace kodi
 
 		enum keyBool
 		{
-			keyPressed,
-			keyHeld,
-			keyReleased
+			key_pressed,
+			key_held,
+			key_released
 		};
 
 		class Window
