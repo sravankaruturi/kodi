@@ -10,16 +10,20 @@ class Game : public Kodi
 	
 private:
 
+#define FALLING_BLOCKS_LIMIT	32
+
 	Window * window;
 	Layer * layer;
-	Sprite * sprite, *sprite2;
+	Texture * fallingBlockTexture;
+	std::vector<Sprite *> fallingBlocks;
+	Sprite * playerSprite;
 	Shader * shader;
 
 public:
 
 	Game()
 	{
-		
+		fallingBlocks.resize(2 * FALLING_BLOCKS_LIMIT);
 	};
 
 	~Game()
@@ -35,14 +39,28 @@ public:
 			"C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/Shaders/batchTexture.vert",
 			"C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/Shaders/batchTexture.frag");
 		layer = new Layer(new BatchRenderer2D(), shader, math::mat4::orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
-		sprite = new Sprite(0, 0, 4, 4, new Texture(
-			                    "C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Assets/Textures/awesomeface.png"));
-		sprite2 = new Sprite(4, 0, 4, 4, new Texture(
-			                     "C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Assets/Textures/container.jpg"));
+		/* sprite = new Sprite(0, 0, 4, 4, new Texture(
+			                    "C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Assets/Textures/awesomeface.png")); */
+
+		fallingBlockTexture = new Texture("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Assets/Dodger/Fallin-Down-Enemy.png");
+
+		for(int i = 0 ; i < FALLING_BLOCKS_LIMIT ; i++)
+		{
+			fallingBlocks[i] = (new Sprite(0.5 + i * 0.5, i * 0.5, 1, 1, fallingBlockTexture));
+		}
+
+		playerSprite = new Sprite(0, 0, 1, 1, new Texture("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Assets/Dodger/Falling-Down-Player.png"));
 
 		/*Manam mundhu pettinavi venukaala kanipisthaayi.*/
-		layer->Add(sprite);
-		layer->Add(sprite2);
+		layer->Add(playerSprite);
+
+		for (auto i = 0; i < FALLING_BLOCKS_LIMIT; i++)
+		{
+			if ( nullptr != fallingBlocks[i])
+			{
+				layer->Add(fallingBlocks[i]);
+			}
+		}
 		
 	}
 
@@ -53,15 +71,15 @@ public:
 
 	void Update() override
 	{
-		const auto speed = 0.05f;
+		const auto speed = 0.005f;
 		if (window->IsKeyPressed(GLFW_KEY_UP))
-			sprite->position.y += speed;
+			playerSprite->position.y += speed;
 		else if (window->IsKeyPressed(GLFW_KEY_DOWN))
-			sprite->position.y -= speed;
+			playerSprite->position.y -= speed;
 		if (window->IsKeyPressed(GLFW_KEY_LEFT))
-			sprite->position.x -= speed;
+			playerSprite->position.x -= speed;
 		else if (window->IsKeyPressed(GLFW_KEY_RIGHT))
-			sprite->position.x += speed;
+			playerSprite->position.x += speed;
 
 		double x, y;
 		window->GetMousePosition(x, y);
