@@ -51,6 +51,8 @@ namespace kodi
 		virtual void Update() = 0;
 		/*Entha vegangaa kudhirithe antha vegangaa vsync lekapothe*/
 		virtual void Render() = 0;
+		/*Physics Ticks*/
+		virtual void PhysicsTick() = 0;
 
 
 

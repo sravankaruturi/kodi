@@ -5,7 +5,9 @@
 using namespace kodi;
 using namespace graphics;
 
-class Game : public Kodi
+
+
+class DodgerGame : public Kodi
 {
 	
 private:
@@ -18,22 +20,30 @@ private:
 	std::vector<Sprite *> fallingBlocks;
 	Sprite * playerSprite;
 	Shader * shader;
+	std::vector<int> activatedFallinBlockIndices;
+	float deltaTime;
+	float time;
+	/*Activate a block each second or the time specified here in seconds*/
+	float activateBlockDelay = 1.f;
+	float timerForActivatingBlocks = 0.f;
+	const float speed = 5.f;
 
 public:
 
-	Game()
+	DodgerGame()
 	{
 		fallingBlocks.resize(2 * FALLING_BLOCKS_LIMIT);
+		time = glfwGetTime();
 	};
 
-	~Game()
+	~DodgerGame()
 	{
 		delete layer;
 	}
 
 	void Init() override
 	{
-		window = createWindow("Test Game", 800, 600);
+		window = createWindow("Test DodgerGame", 800, 600);
 		// TODO : Ikkada Shader map thayaaru chesukoni pettuko.
 		shader = new Shader(
 			"C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/Shaders/batchTexture.vert",
@@ -44,10 +54,13 @@ public:
 
 		fallingBlockTexture = new Texture("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Assets/Dodger/Fallin-Down-Enemy.png");
 
+		// They are just above the visible screen space.
 		for(int i = 0 ; i < FALLING_BLOCKS_LIMIT ; i++)
 		{
-			fallingBlocks[i] = (new Sprite(0.5 + i * 0.5, i * 0.5, 1, 1, fallingBlockTexture));
+			fallingBlocks[i] = (new Sprite(-15 + i * 1.5, 10, 1, 1, fallingBlockTexture));
 		}
+
+		
 
 		playerSprite = new Sprite(0, 0, 1, 1, new Texture("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Assets/Dodger/Falling-Down-Player.png"));
 
@@ -71,15 +84,42 @@ public:
 
 	void Update() override
 	{
-		const auto speed = 0.005f;
+
+		deltaTime = glfwGetTime() - time;
+		time = glfwGetTime();
+
+		const auto local_speed = speed * deltaTime;
+
+		// Activate a sprite each second? Or maybe have it as a variable and activate them according to that?
+		timerForActivatingBlocks += deltaTime;
+		if ( timerForActivatingBlocks > activateBlockDelay)
+		{
+			timerForActivatingBlocks = 0.f;
+			// Chose a block at random.
+			activatedFallinBlockIndices.push_back(rand() % FALLING_BLOCKS_LIMIT);
+		}
+
+		PhysicsTick();
+
+		// For each block, prop them down.
+		for (auto index: activatedFallinBlockIndices)
+		{
+			fallingBlocks[index]->position.y -= local_speed;
+			if ( fallingBlocks[index]->position.y < -9.f)
+			{
+				fallingBlocks[index]->position.y = 10.f;
+			}
+		}
+
+
 		if (window->IsKeyPressed(GLFW_KEY_UP))
-			playerSprite->position.y += speed;
+			playerSprite->position.y += local_speed;
 		else if (window->IsKeyPressed(GLFW_KEY_DOWN))
-			playerSprite->position.y -= speed;
+			playerSprite->position.y -= local_speed;
 		if (window->IsKeyPressed(GLFW_KEY_LEFT))
-			playerSprite->position.x -= speed;
+			playerSprite->position.x -= local_speed;
 		else if (window->IsKeyPressed(GLFW_KEY_RIGHT))
-			playerSprite->position.x += speed;
+			playerSprite->position.x += local_speed;
 
 		double x, y;
 		window->GetMousePosition(x, y);
@@ -89,6 +129,18 @@ public:
 	void Render() override
 	{
 		layer->Render();
+	}
+
+	void PhysicsTick() override
+	{
+		// TODO: We need to make sure that the score decreases only once per a falling block.
+		for ( auto sprite: fallingBlocks)
+		{
+			if ( playerSprite->CheckCollision(sprite))
+			{
+				printf("Touched a block, %p", sprite);
+			}
+		}
 	}
 
 };

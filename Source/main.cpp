@@ -23,7 +23,7 @@ using namespace kodi;
 using namespace graphics;
 using namespace math;
 
-#include "../Game/Game.cpp"
+#include "../Game/DodgerGame.cpp"
 
 #if _WINDOWS
 #define _CRTDBG_MAP_ALLOC  
@@ -132,7 +132,7 @@ int main()
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
 
-	Game g;
+	DodgerGame g;
 	g.Start();
 	return 0;
 }
