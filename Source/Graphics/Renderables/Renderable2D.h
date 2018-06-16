@@ -21,6 +21,7 @@ namespace kodi {
 			unsigned int colour;
 			vec2 texCoord;
 			float tSlot;
+			int useColour; // This is either 0 or 1. No other value should be passed here.
 		};
 
 		class Renderable2D {
@@ -28,10 +29,11 @@ namespace kodi {
 		public:
 			vec3 position;
 
+			unsigned int colour;
+
 		protected:
 			
 			vec2 size;
-			unsigned int colour;
 			// GLuint textureID;	// Manaku idhi pointer kanna chinnadhi. Thakkuva space theesukontundhi.
 			// Manam ikkada okokka renderable kee oka texture maathrame vuntundhani assume chesukontunnamu.
 			Texture * texture;

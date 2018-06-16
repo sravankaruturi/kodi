@@ -21,7 +21,28 @@ namespace kodi {
 
 		void Shader::Enable()
 		{
+			auto error = glGetError();
+
+			if (error != GL_NO_ERROR) {
+				std::cout << "OpenGL Error : " << error << std::endl;
+			}
+
+#if KODI_THROW_EXCEPTIONS
+			assert("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
+#endif
+
 			glUseProgram(this->shaderID);
+
+			error = glGetError();
+
+			if (error != GL_NO_ERROR) {
+				std::cout << "OpenGL Error : " << error << std::endl;
+			}
+
+#if KODI_THROW_EXCEPTIONS
+			assert("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
+#endif
+
 		}
 
 		void Shader::Disable()
@@ -87,6 +108,16 @@ namespace kodi {
 			// TODO: Ikkada oka assert pettochchu. choodu.
 			glLinkProgram(shaderID);
 			glValidateProgram(shaderID);
+
+			auto error = glGetError();
+
+			if (error != GL_NO_ERROR) {
+				std::cout << "OpenGL Error : " << error << std::endl;
+			}
+
+#if KODI_THROW_EXCEPTIONS
+			assert("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
+#endif
 
 			glDeleteShader(vertex);
 			glDeleteShader(fragment);

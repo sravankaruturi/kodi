@@ -120,7 +120,7 @@ namespace kodi {
 			}
 
 #if KODI_THROW_EXCEPTIONS
-			assert(error == GL_NO_ERROR);
+			assert("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
 #endif
 
 			glfwPollEvents();

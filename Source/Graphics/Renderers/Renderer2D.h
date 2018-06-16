@@ -48,6 +48,8 @@ namespace kodi {
 			virtual void Submit(const Renderable2D* _renderable) = 0;
 			virtual void Flush() = 0;
 
+			virtual void DrawString(const std::string& _text, const float _x, const float _y, const unsigned& _colour, const float _scale) = 0;
+
 			// Ivi Implement Cheyyakapoyinaa Simple2DRendererki pedhdha nashtam ledhu.
 			virtual void Begin() {}
 			virtual void End() {}

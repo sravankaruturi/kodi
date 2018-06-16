@@ -45,6 +45,8 @@ namespace kodi
 
 		// Initialization appudu maathrame run avuthundhi.
 		virtual void Init() = 0;
+		// Manaki Game Start Ayyaka okati.
+		virtual void StartGame() = 0;
 		// Sekanukokkasaari
 		virtual void Tick() = 0;
 		/*Sekanuki 60 saarlu*/

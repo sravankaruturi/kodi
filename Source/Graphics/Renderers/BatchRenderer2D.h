@@ -4,6 +4,10 @@
 #include "../Buffers/IndexBuffer.h"
 #include "../Renderables/Renderable2D.h"
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include <map>
+
 namespace kodi {
 	namespace graphics {
 
@@ -22,6 +26,14 @@ namespace kodi {
 #define SHADER_TEXCOORD_INDEX		2
 #define SHADER_TEXID_INDEX			3
 
+		/// Holds all state information relevant to a character as loaded using FreeType
+		struct Character {
+			GLuint texture_id;   // ID handle of the glyph texture
+			math::vec2 size;    // Size of glyph
+			math::vec2 bearing;  // Offset from baseline to left/top of glyph
+			GLuint advance;    // Horizontal offset to advance to next glyph
+		};
+
 		class BatchRenderer2D : public Renderer2D {
 
 		private:
@@ -36,6 +48,11 @@ namespace kodi {
 
 			std::vector<GLuint> textureSlots;
 
+			std::map<GLchar, Character> characters;
+
+			FT_Library ft;
+			FT_Face textFace;
+
 		public:
 
 			BatchRenderer2D();
@@ -45,6 +62,8 @@ namespace kodi {
 
 			void Begin();
 			void End();
+
+			void DrawString(const std::string& _text, const float _x, const float _y, const unsigned& _colour, const float _scale) override;
 
 			void Flush() override;
 

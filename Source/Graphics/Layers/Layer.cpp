@@ -8,8 +8,40 @@ namespace kodi
 		Layer::Layer(Renderer2D* _renderer, Shader* _shader, mat4 _projectionMatrix)
 			: renderer2D(_renderer), shader(_shader), projectionMatrix(_projectionMatrix)
 		{
+
+			auto error = glGetError();
+
+			if (error != GL_NO_ERROR) {
+				std::cout << "OpenGL Error : " << error << std::endl;
+			}
+
+#if KODI_THROW_EXCEPTIONS
+			assert("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
+#endif
+
 			shader->Enable();
+
+			error = glGetError();
+
+			if (error != GL_NO_ERROR) {
+				std::cout << "OpenGL Error : " << error << std::endl;
+			}
+
+#if KODI_THROW_EXCEPTIONS
+			assert("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
+#endif
+
 			shader->setMat4("pr_matrix", projectionMatrix);
+
+			error = glGetError();
+
+			if (error != GL_NO_ERROR) {
+				std::cout << "OpenGL Error : " << error << std::endl;
+			}
+
+#if KODI_THROW_EXCEPTIONS
+			assert("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
+#endif
 
 			GLint tex_ids[RENDERER_MAX_TEXTURES];
 			for ( auto i = 0 ; i < RENDERER_MAX_TEXTURES ; i++)
@@ -17,6 +49,16 @@ namespace kodi
 				tex_ids[i] = i;
 			}
 			shader->SetIntArray("textures",  RENDERER_MAX_TEXTURES, tex_ids);
+
+			error = glGetError();
+
+			if (error != GL_NO_ERROR) {
+				std::cout << "OpenGL Error : " << error << std::endl;
+			}
+
+#if KODI_THROW_EXCEPTIONS
+			assert("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
+#endif
 
 			shader->Disable();
 		}
