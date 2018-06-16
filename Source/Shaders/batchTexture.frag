@@ -10,6 +10,7 @@ in DATA{
 	vec4 colour;
 	vec2 texcoord;
 	float tslot;
+	float useColour;
 } fs_in;
 
 float ambience = 0.2;
@@ -25,11 +26,13 @@ void main()
 	}else{
 
 		//	Thappu cast avvakundaa.
-
 		int index = int(fs_in.tslot - 0.5);
 
-		colour = texture(textures[index], fs_in.texcoord) * ( intensity + ambience ) ;
-		// colour = vec4(fs_in.tslot + 1, 0, 0, 1);
+		colour = (texture(textures[index], fs_in.texcoord) + (fs_in.colour * fs_in.useColour)) * ( intensity + ambience )/(fs_in.useColour + 1) ;
+		// colour = vec4(fs_in.useColour, 1.0, 0.0, 1.0);
+		// colour = vec4(1, 1, 1, 1);
+		// colour = fs_in.colour;
+		// colour = texture(textures[index], fs_in.texcoord) * (intensity + ambience);
 	}
 
 	

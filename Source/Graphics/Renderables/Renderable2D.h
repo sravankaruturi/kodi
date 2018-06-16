@@ -21,7 +21,7 @@ namespace kodi {
 			unsigned int colour;
 			vec2 texCoord;
 			float tSlot;
-			int useColour; // This is either 0 or 1. No other value should be passed here.
+			float useColour; // This is either 0 or 1. No other value should be passed here.
 		};
 
 		class Renderable2D {

@@ -61,7 +61,7 @@ public:
 		time = glfwGetTime();
 
 		testLabel = new Label(std::to_string(health), -16, 8, 255);
-		startGame = new Label("Start Game", -5, -1, 0xFFFFFF);
+		startGame = new Label("Start Game", -4.1, -1, 0xFFFFFF);
 		endGame = new Label("End Game", -4, -2, 255);
 
 	};
@@ -208,7 +208,7 @@ public:
 
 		if ( selectedLabel == 1 )
 		{
-			startGame->colour = 0xFFFF;
+			startGame->colour = 0xFFFFFF;
 			endGame->colour = 255;
 		}else if ( selectedLabel == -1)
 		{

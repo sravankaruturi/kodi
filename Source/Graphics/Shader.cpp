@@ -80,7 +80,7 @@ namespace kodi {
 
 #ifdef KODI_THROW_EXCEPTIONS
 			// Error Variable choodu
-			assert(GL_FALSE != result);
+			_ASSERT(GL_FALSE != result);
 #endif
 
 			glShaderSource(fragment, 1, &fragSource, NULL);
@@ -99,7 +99,7 @@ namespace kodi {
 
 #ifdef KODI_THROW_EXCEPTIONS
 			// Error Variable choodu
-			assert(GL_FALSE != result);
+			_ASSERT(GL_FALSE != result);
 #endif
 
 			glAttachShader(shaderID, vertex);

@@ -104,6 +104,7 @@ namespace kodi {
 			buffer->colour = colour;
 			buffer->texCoord = bottom_left;
 			buffer->tSlot = tslot;
+			buffer->useColour = 0.0f;
 			buffer++;
 
 			// Rendava Chukka
@@ -111,6 +112,7 @@ namespace kodi {
 			buffer->colour = colour;
 			buffer->texCoord = top_left;
 			buffer->tSlot = tslot;
+			buffer->useColour = 0.0f;
 			buffer++;
 
 			// Moodava Chukka
@@ -118,6 +120,7 @@ namespace kodi {
 			buffer->colour = colour;
 			buffer->texCoord = top_right;
 			buffer->tSlot = tslot;
+			buffer->useColour = 0.0f;
 			buffer++;
 
 			// Naalugava Chukka
@@ -125,6 +128,7 @@ namespace kodi {
 			buffer->colour = colour;
 			buffer->texCoord = bottom_right;
 			buffer->tSlot = tslot;
+			buffer->useColour = 0.f;
 			buffer++;
 
 #endif
@@ -207,6 +211,7 @@ namespace kodi {
 				buffer->colour = _colour;
 				buffer->texCoord = bottom_left;
 				buffer->tSlot = tslot;
+				buffer->useColour = 0.0;
 				buffer++;
 
 				// Rendava Chukka
@@ -214,6 +219,7 @@ namespace kodi {
 				buffer->colour = _colour;
 				buffer->texCoord = top_left;
 				buffer->tSlot = tslot;
+				buffer->useColour = 0.0;
 				buffer++;
 
 				// Moodava Chukka
@@ -221,6 +227,7 @@ namespace kodi {
 				buffer->colour = _colour;
 				buffer->texCoord = top_right;
 				buffer->tSlot = tslot;
+				buffer->useColour = 0.0;
 				buffer++;
 
 				// Naalugava Chukka
@@ -228,6 +235,7 @@ namespace kodi {
 				buffer->colour = _colour;
 				buffer->texCoord = bottom_right;
 				buffer->tSlot = tslot;
+				buffer->useColour = 0.0;
 				buffer++;
 
 				indexCount += 6;
@@ -279,12 +287,14 @@ namespace kodi {
 			glEnableVertexAttribArray(SHADER_COLOUR_INDEX);
 			glEnableVertexAttribArray(SHADER_TEXCOORD_INDEX);
 			glEnableVertexAttribArray(SHADER_TEXID_INDEX);
+			glEnableVertexAttribArray(SHADER_USE_COLOUR_INDEX);
 
 			// glVertexAttribPointer(SHADER_VERTEX_INDEX, 3 * sizeof(GLfloat), GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), 0);
 			glVertexAttribPointer(SHADER_VERTEX_INDEX, 3 , GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid *)0);
 			glVertexAttribPointer(SHADER_COLOUR_INDEX, 4, GL_UNSIGNED_BYTE, GL_TRUE, RENDERER_VERTEX_SIZE, (const GLvoid*)offsetof(VertexData, VertexData::colour));
 			glVertexAttribPointer(SHADER_TEXCOORD_INDEX, 2, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)offsetof(VertexData, VertexData::texCoord));
 			glVertexAttribPointer(SHADER_TEXID_INDEX, 1, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)offsetof(VertexData, VertexData::tSlot));
+			glVertexAttribPointer(SHADER_USE_COLOUR_INDEX, 1, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)offsetof(VertexData, VertexData::useColour));
 
 			// Binding inkaa Unbinidng chaala ekkuva performance hits isthaayi.
 			glBindBuffer(GL_ARRAY_BUFFER, 0);

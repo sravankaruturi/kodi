@@ -25,6 +25,7 @@ namespace kodi {
 #define SHADER_COLOUR_INDEX			1
 #define SHADER_TEXCOORD_INDEX		2
 #define SHADER_TEXID_INDEX			3
+#define SHADER_USE_COLOUR_INDEX		4
 
 		/// Holds all state information relevant to a character as loaded using FreeType
 		struct Character {
