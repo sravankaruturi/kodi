@@ -63,6 +63,16 @@ namespace kodi
 			shader->Disable();
 		}
 
+		void Layer::ClearRenderables()
+		{
+			// TODO: This might cause memory leaks? Deleting objects here for now. But that might cause several issues when I want to resuse the sprites?
+			//for (auto& renderable : renderables)
+			//{
+			//	delete renderable;
+			//}
+			this->renderables.clear();
+		}
+
 		Layer::~Layer()
 		{
 			delete renderer2D;

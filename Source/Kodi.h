@@ -21,6 +21,8 @@ namespace kodi
 
 	protected:
 
+		bool shouldClose = false;
+
 		Kodi()
 			: framesPerSecond(0), updatesPerSecond(0)
 		{
@@ -109,7 +111,7 @@ namespace kodi
 					Tick();
 				}
 
-				if ( window->IsKeyPressed(GLFW_KEY_ESCAPE))
+				if ( window->IsKeyPressed(GLFW_KEY_ESCAPE) || this->shouldClose )
 				{
 					break;
 				}

@@ -31,6 +31,8 @@ namespace kodi
 
 			std::vector<Renderable2D *> GetRenderables() { return renderables; };
 
+			void ClearRenderables();
+
 		};
 
 	}

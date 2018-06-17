@@ -24,6 +24,9 @@ private:
 	Texture * fallingBlockTexture;
 	std::vector<Sprite *> fallingBlocks;
 	Sprite * playerSprite;
+	Label * scoreLabel;
+	Label * gameOverLabel;
+
 	Shader * shader;
 	std::vector<int> activatedFallinBlockIndices;
 	float deltaTime;
@@ -45,8 +48,12 @@ private:
 	 */
 	bool gameActive = false;
 	bool gameInitialised = false;
+	bool gameOver = false;
 
 	Menu * startGameMenu;
+
+	float physicsTimer = 0.0f;
+	float physicsTickTime = 1.0 / 30.0f;
 
 public:
 
@@ -71,6 +78,10 @@ public:
 		std::vector<std::string> test = { "Start Game", "Quit" };
 
 		startGameMenu = new Menu(test, vec2(-4.1f, 0.5f), 0xFFFF11, 1);
+
+		scoreLabel = new Label(std::to_string(health), -15.5f, 8.0f, 0xFFFFFF);
+
+		gameOverLabel = new Label("Game Over Press Enter to restart", -6.0f, -0.5f, 0xFFFFFF);
 
 	};
 
@@ -106,6 +117,10 @@ public:
 		playerSprite = new Sprite(0, 0, 1, 1, new Texture("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Assets/Dodger/Falling-Down-Player.png"));
 
 		menuLayer->Add(startGameMenu);
+
+		gameLayer->Add(scoreLabel);
+
+		gameOverLayer->Add(gameOverLabel);
 
 	}
 
@@ -149,8 +164,14 @@ public:
 			activatedFallinBlockIndices.push_back(rand() % FALLING_BLOCKS_LIMIT);
 		}
 
-		PhysicsTick();
+		physicsTimer += deltaTime;
 
+		if ( physicsTimer > physicsTickTime)
+		{
+			PhysicsTick();
+			physicsTimer = 0.0f;
+		}
+				
 		// For each block, prop them down.
 		for (auto index: activatedFallinBlockIndices)
 		{
@@ -175,8 +196,6 @@ public:
 
 		}else
 		{
-			if ( (window->IsKeyPressed(GLFW_KEY_UP)) || (window->IsKeyPressed(GLFW_KEY_DOWN)) )
-				selectedLabel *= -1 ;
 
 			if (window->IsKeyPressed(GLFW_KEY_UP))
 			{
@@ -188,16 +207,38 @@ public:
 
 			if (window->IsKeyPressed(GLFW_KEY_ENTER))
 			{
-				if (this->startGameMenu->selectedIndex == 0)
+				if ( !gameInitialised )
 				{
-					
+					switch (this->startGameMenu->selectedIndex)
+					{
+					case 0:
+						StartGame();
+						break;
+					case 1:
+						this->shouldClose = true;
+						break;
+					}
 				}
-				if (!gameInitialised)
+				else if ( gameOver)
 				{
-					StartGame();
+					// TODO: Create a reset function..
+					gameLayer->ClearRenderables();
+					this->Init();
+					gameOver = false;
+					gameInitialised = false;
+					health = 100;
+					// fallingBlocks.clear();
+					activatedFallinBlockIndices.clear();
+					this->scoreLabel->text = std::to_string(health);
 				}
-					
+													
 			}
+		}
+
+		if ( this->health < 0.0f)
+		{
+			gameOver = true;
+			gameActive = false;
 		}
 
 		double x, y;
@@ -214,7 +255,7 @@ public:
 		}else if ( gameActive)
 		{
 			gameLayer->Render();
-		}else
+		}else if ( gameOver)
 		{
 			gameOverLayer->Render();
 		}
@@ -223,12 +264,15 @@ public:
 
 	void PhysicsTick() override
 	{
-		// TODO: We need to make sure that the score decreases only once per a falling block.
+		// TODO: We need to make sure that the score decreases only once per a falling block or maybe once per tick.
 		for ( auto sprite: fallingBlocks)
 		{
 			if ( playerSprite->CheckCollision(sprite))
 			{
 				printf("Touched a block, %p", sprite);
+				health--;
+				this->scoreLabel->text = std::to_string(health);
+				break;
 			}
 		}
 	}
