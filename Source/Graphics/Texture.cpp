@@ -30,7 +30,7 @@ namespace kodi
 			const auto data = stbi_load(fileName.c_str(), &width, &height, &nr_channels, 0);
 
 #if KODI_THROW_EXCEPTIONS
-			assert(NULL != data);
+			_ASSERT("Texture cannot be loaded.", NULL != data);
 #endif
 
 			glGenTextures(1, &textureID);
@@ -46,7 +46,7 @@ namespace kodi
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 			default:
 #if KODI_THROW_EXCEPTIONS
-				assert("Unknown Channel" + nr_channels);
+				_ASSERT("Unknown Channel" + nr_channels);
 #endif
 				break;
 			}

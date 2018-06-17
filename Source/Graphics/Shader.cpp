@@ -1,6 +1,5 @@
 #include "Shader.h"
 #include <vector>
-#include <assert.h>
 #include <iostream>
 
 namespace kodi {
@@ -28,7 +27,7 @@ namespace kodi {
 			}
 
 #if KODI_THROW_EXCEPTIONS
-			assert("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
+			_ASSERT("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
 #endif
 
 			glUseProgram(this->shaderID);
@@ -40,7 +39,7 @@ namespace kodi {
 			}
 
 #if KODI_THROW_EXCEPTIONS
-			assert("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
+			_ASSERT("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
 #endif
 
 		}
@@ -116,7 +115,7 @@ namespace kodi {
 			}
 
 #if KODI_THROW_EXCEPTIONS
-			assert("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
+			_ASSERT("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
 #endif
 
 			glDeleteShader(vertex);

@@ -16,7 +16,7 @@ namespace kodi
 			}
 
 #if KODI_THROW_EXCEPTIONS
-			assert("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
+			_ASSERT("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
 #endif
 
 			shader->Enable();
@@ -28,7 +28,7 @@ namespace kodi
 			}
 
 #if KODI_THROW_EXCEPTIONS
-			assert("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
+			_ASSERT("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
 #endif
 
 			shader->setMat4("pr_matrix", projectionMatrix);
@@ -40,7 +40,7 @@ namespace kodi
 			}
 
 #if KODI_THROW_EXCEPTIONS
-			assert("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
+			_ASSERT("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
 #endif
 
 			GLint tex_ids[RENDERER_MAX_TEXTURES];
@@ -57,7 +57,7 @@ namespace kodi
 			}
 
 #if KODI_THROW_EXCEPTIONS
-			assert("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
+			_ASSERT("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
 #endif
 
 			shader->Disable();

@@ -203,7 +203,7 @@ namespace kodi {
 				}
 				else
 				{
-					assert("Wutface?");
+					_ASSERT("Wutface?");
 				}
 
 				// First Vertex.
@@ -319,8 +319,8 @@ namespace kodi {
 
 			/*Font Stuff*/
 #ifdef KODI_THROW_EXCEPTIONS
-			assert(0 == FT_Init_FreeType(&ft));
-			assert(0 == (FT_New_Face(ft, "C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/fonts/arial.ttf", 0, 
+			_ASSERT(0 == FT_Init_FreeType(&ft));
+			_ASSERT(0 == (FT_New_Face(ft, "C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/fonts/arial.ttf", 0,
 				&textFace)));
 #endif
 

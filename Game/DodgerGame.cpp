@@ -1,6 +1,7 @@
 #include "../Source/Kodi.h"
 #include "../Source/Graphics/Renderers/BatchRenderer2D.h"
 #include "../Source/Graphics/Label.h"
+#include "../Source/Graphics/Layers/Menu.h"
 
 
 using namespace kodi;
@@ -14,7 +15,12 @@ private:
 #define FALLING_BLOCKS_LIMIT	32
 
 	Window * window;
-	Layer * layer;
+
+	/* Layers */
+	Layer * menuLayer;
+	Layer * gameLayer;
+	Layer * gameOverLayer;
+
 	Texture * fallingBlockTexture;
 	std::vector<Sprite *> fallingBlocks;
 	Sprite * playerSprite;
@@ -29,15 +35,6 @@ private:
 
 	int health = 100;
 
-	Label * testLabel;
-	/**
-	 * \brief The Text Start Game.
-	 */
-	Label * startGame;
-	/**
-	 * \brief The Text End Game,
-	 */
-	Label * endGame;
 	/**
 	 * \brief Manam e Label Select chesukunnamo manaki gurthu vundataaniki.
 	 */
@@ -49,38 +46,17 @@ private:
 	bool gameActive = false;
 	bool gameInitialised = false;
 
-	///* Testing */
-	//Layer * textLayer;
-	//Shader * textShader;
+	Menu * startGameMenu;
 
 public:
 
 	DodgerGame()
 	{
-		fallingBlocks.resize(2 * FALLING_BLOCKS_LIMIT);
-		time = glfwGetTime();
-
-		testLabel = new Label(std::to_string(health), -16, 8, 255);
-		startGame = new Label("Start Game", -4.1, -1, 0xFFFFFF);
-		endGame = new Label("End Game", -4, -2, 255);
-
-	};
-
-	~DodgerGame()
-	{
-		delete layer;
-		delete testLabel;
-	}
-
-	void Init() override
-	{
 
 		window = createWindow("Test DodgerGame", 800, 600);
 
-		// TODO : Ikkada Shader map thayaaru chesukoni pettuko.
-		shader = new Shader(
-			"C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/Shaders/batchTexture.vert",
-			"C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/Shaders/batchTexture.frag");
+		fallingBlocks.resize(2 * FALLING_BLOCKS_LIMIT);
+		time = glfwGetTime();
 
 		auto error = glGetError();
 
@@ -89,27 +65,35 @@ public:
 		}
 
 #if KODI_THROW_EXCEPTIONS
-		assert("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
+		_ASSERT("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
 #endif
 
+		std::vector<std::string> test = { "Start Game", "Quit" };
 
-		layer = new Layer(new BatchRenderer2D(), shader, math::mat4::orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
+		startGameMenu = new Menu(test, vec2(-4.1f, 0.5f), 0xFFFF11, 1);
 
-		error = glGetError();
+	};
 
-		if (error != GL_NO_ERROR) {
-			std::cout << "OpenGL Error : " << error << std::endl;
-		}
+	~DodgerGame()
+	{
+		delete menuLayer;
+		delete gameLayer;
+		delete gameOverLayer;
+		// The Layer deletes it??
+		// delete startGameMenu;
+	}
 
-#if KODI_THROW_EXCEPTIONS
-		assert("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
-#endif
+	void Init() override
+	{
+				
+		// TODO : Ikkada Shader map thayaaru chesukoni pettuko.
+		shader = new Shader(
+			"C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/Shaders/batchTexture.vert",
+			"C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/Shaders/batchTexture.frag");
 
-		/*textShader = new Shader(
-			"C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/Shaders/text.vert",
-			"C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/Shaders/text.frag");
-
-		textLayer = new Layer(new BatchRenderer2D(), textShader, mat4::orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));*/
+		menuLayer = new Layer(new BatchRenderer2D(), shader, math::mat4::orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
+		gameLayer = new Layer(new BatchRenderer2D(), shader, math::mat4::orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
+		gameOverLayer = new Layer(new BatchRenderer2D(), shader, math::mat4::orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
 
 		fallingBlockTexture = new Texture("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Assets/Dodger/Fallin-Down-Enemy.png");
 
@@ -121,26 +105,25 @@ public:
 
 		playerSprite = new Sprite(0, 0, 1, 1, new Texture("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Assets/Dodger/Falling-Down-Player.png"));
 
-		layer->Add(startGame);
-		layer->Add(endGame);
+		menuLayer->Add(startGameMenu);
 
 	}
 
 	void StartGame() override
 	{
 		/*Manam mundhu pettinavi venukaala kanipisthaayi.*/
-		layer->Add(playerSprite);
-		layer->Add(testLabel);
+		gameLayer->Add(playerSprite);
 
 		for (auto i = 0; i < FALLING_BLOCKS_LIMIT; i++)
 		{
 			if (nullptr != fallingBlocks[i])
 			{
-				layer->Add(fallingBlocks[i]);
+				gameLayer->Add(fallingBlocks[i]);
 			}
 		}
 
 		gameInitialised = true;
+		gameActive = true;
 
 	}
 
@@ -165,16 +148,6 @@ public:
 			// Chose a block at random.
 			activatedFallinBlockIndices.push_back(rand() % FALLING_BLOCKS_LIMIT);
 		}
-
-		auto error = glGetError();
-
-		if (error != GL_NO_ERROR) {
-			std::cout << "OpenGL Error : " << error << std::endl;
-		}
-
-#if KODI_THROW_EXCEPTIONS
-		assert("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
-#endif
 
 		PhysicsTick();
 
@@ -204,38 +177,47 @@ public:
 		{
 			if ( (window->IsKeyPressed(GLFW_KEY_UP)) || (window->IsKeyPressed(GLFW_KEY_DOWN)) )
 				selectedLabel *= -1 ;
-		}
 
-		if ( selectedLabel == 1 )
-		{
-			startGame->colour = 0xFFFFFF;
-			endGame->colour = 255;
-		}else if ( selectedLabel == -1)
-		{
-			endGame->colour = 0xFFFFFF;
-			startGame->colour = 255;
+			if (window->IsKeyPressed(GLFW_KEY_UP))
+			{
+				this->startGameMenu->MenuUp();
+			}else if (window->IsKeyPressed(GLFW_KEY_DOWN))
+			{
+				this->startGameMenu->MenuDown();
+			}
+
+			if (window->IsKeyPressed(GLFW_KEY_ENTER))
+			{
+				if (this->startGameMenu->selectedIndex == 0)
+				{
+					
+				}
+				if (!gameInitialised)
+				{
+					StartGame();
+				}
+					
+			}
 		}
 
 		double x, y;
 		window->GetMousePosition(x, y);
 		shader->setVec2("light_pos", math::vec2((float)(x * 32.0f / window->GetWidth() - 16.0f), (float)(9.0f - y * 18.0f / window->GetHeight())));
 
-		error = glGetError();
-
-		if (error != GL_NO_ERROR) {
-			std::cout << "OpenGL Error : " << error << std::endl;
-		}
-
-#if KODI_THROW_EXCEPTIONS
-		assert("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
-#endif
-
-		testLabel->text = std::to_string(time);
 	}
 
 	void Render() override
 	{
-		layer->Render();
+		if ( !gameInitialised)
+		{
+			menuLayer->Render();
+		}else if ( gameActive)
+		{
+			gameLayer->Render();
+		}else
+		{
+			gameOverLayer->Render();
+		}
 		// textLayer->Render();
 	}
 

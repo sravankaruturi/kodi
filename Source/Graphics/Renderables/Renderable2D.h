@@ -71,6 +71,7 @@ namespace kodi {
 			{
 			}
 
+		public:
 			virtual void SubmitToRenderer(Renderer2D* _renderer) const
 			{
 				_renderer->Submit(this);

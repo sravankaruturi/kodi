@@ -8,14 +8,15 @@ namespace kodi
 		class Group : public Renderable2D
 		{
 
-		private:
+		protected:
+
 			std::vector<Renderable2D*> renderables;
+			
 			math::mat4 transformationMatrix;
 
 		public:
 
 			Group();
-
 			~Group();
 
 			void SubmitToRenderer(Renderer2D* _renderer) const override;
