@@ -35,7 +35,8 @@ private:
 	/*Activate a block each second or the time specified here in seconds*/
 	float activateBlockDelay = 1.f;
 	float timerForActivatingBlocks = 0.f;
-	const float speed = 5.f;
+	float playerSpeed = 7.f;
+	float speed = 5.f;
 
 	int health = 100;
 
@@ -154,7 +155,10 @@ public:
 		deltaTime = glfwGetTime() - time;
 		time = glfwGetTime();
 
-		const auto local_speed = speed * deltaTime;
+		auto local_speed = speed * deltaTime;
+		auto player_local_speed = playerSpeed * deltaTime;
+
+		playerSpeed += deltaTime;
 
 		if ( gameActive)
 		{
@@ -195,13 +199,27 @@ public:
 		{
 			
 			if (window->IsKeyPressed(GLFW_KEY_UP))
-				playerSprite->position.y += local_speed;
+			{
+				if (playerSprite->position.y < 9.0f)
+					playerSprite->position.y += player_local_speed;
+			}				
 			else if (window->IsKeyPressed(GLFW_KEY_DOWN))
-				playerSprite->position.y -= local_speed;
+			{
+				if (playerSprite->position.y > -9.0f)
+					playerSprite->position.y -= player_local_speed;
+			}
+
 			if (window->IsKeyPressed(GLFW_KEY_LEFT))
-				playerSprite->position.x -= local_speed;
+			{
+				if (playerSprite->position.x > -16.0f)
+					playerSprite->position.x -= player_local_speed;
+			}				
 			else if (window->IsKeyPressed(GLFW_KEY_RIGHT))
-				playerSprite->position.x += local_speed;
+			{
+				if (playerSprite->position.x < 16.0f)
+					playerSprite->position.x += player_local_speed;
+			}
+				
 
 		}else
 		{
@@ -230,15 +248,7 @@ public:
 				}
 				else if ( gameOver)
 				{
-					// TODO: Create a reset function..
-					gameLayer->ClearRenderables();
-					this->Init();
-					gameOver = false;
-					gameInitialised = false;
-					health = 100;
-					// fallingBlocks.clear();
-					activatedFallinBlockIndices.clear();
-					this->scoreLabel->text = std::to_string(health);
+					ResetGame();
 				}
 													
 			}
@@ -284,6 +294,18 @@ public:
 				break;
 			}
 		}
+	}
+
+	void ResetGame() override
+	{
+		gameLayer->ClearRenderables();
+		this->Init();
+		gameOver = false;
+		gameInitialised = false;
+		health = 100;
+		// fallingBlocks.clear();
+		activatedFallinBlockIndices.clear();
+		this->scoreLabel->text = std::to_string(health);
 	}
 
 };

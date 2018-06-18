@@ -57,6 +57,8 @@ namespace kodi
 		virtual void Render() = 0;
 		/*Physics Ticks*/
 		virtual void PhysicsTick() = 0;
+		/*Reset the Game for the next Run*/
+		virtual void ResetGame() = 0;
 
 
 
