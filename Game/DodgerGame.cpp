@@ -2,6 +2,7 @@
 #include "../Source/Graphics/Renderers/BatchRenderer2D.h"
 #include "../Source/Graphics/Label.h"
 #include "../Source/Graphics/Layers/Menu.h"
+#include <chrono>
 
 
 using namespace kodi;
@@ -155,31 +156,39 @@ public:
 
 		const auto local_speed = speed * deltaTime;
 
-		// Activate a sprite each second? Or maybe have it as a variable and activate them according to that?
-		timerForActivatingBlocks += deltaTime;
-		if ( timerForActivatingBlocks > activateBlockDelay)
+		if ( gameActive)
 		{
-			timerForActivatingBlocks = 0.f;
-			// Chose a block at random.
-			activatedFallinBlockIndices.push_back(rand() % FALLING_BLOCKS_LIMIT);
-		}
-
-		physicsTimer += deltaTime;
-
-		if ( physicsTimer > physicsTickTime)
-		{
-			PhysicsTick();
-			physicsTimer = 0.0f;
-		}
-				
-		// For each block, prop them down.
-		for (auto index: activatedFallinBlockIndices)
-		{
-			fallingBlocks[index]->position.y -= local_speed;
-			if ( fallingBlocks[index]->position.y < -9.f)
+			
+			// Activate a sprite each second? Or maybe have it as a variable and activate them according to that?
+			timerForActivatingBlocks += deltaTime;
+			if (timerForActivatingBlocks > activateBlockDelay)
 			{
-				fallingBlocks[index]->position.y = 10.f;
+				timerForActivatingBlocks = 0.f;
+				// Chose a block at random.
+
+				// Seed something random?
+				srand(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
+				activatedFallinBlockIndices.push_back(rand() % FALLING_BLOCKS_LIMIT);
 			}
+
+			physicsTimer += deltaTime;
+
+			if (physicsTimer > physicsTickTime)
+			{
+				PhysicsTick();
+				physicsTimer = 0.0f;
+			}
+
+			// For each block, prop them down.
+			for (auto index : activatedFallinBlockIndices)
+			{
+				fallingBlocks[index]->position.y -= local_speed;
+				if (fallingBlocks[index]->position.y < -9.f)
+				{
+					fallingBlocks[index]->position.y = 10.f;
+				}
+			}
+
 		}
 
 		if ( gameActive)
