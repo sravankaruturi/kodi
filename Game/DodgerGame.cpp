@@ -41,11 +41,6 @@ private:
 	int health = 100;
 
 	/**
-	 * \brief Manam e Label Select chesukunnamo manaki gurthu vundataaniki.
-	 */
-	int selectedLabel = 1; // 1 if Start Game and -1 if Quit.
-
-	/**
 	 * \brief This would be activated once the player hits Start Game.
 	 */
 	bool gameActive = false;

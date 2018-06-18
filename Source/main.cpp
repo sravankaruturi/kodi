@@ -1,4 +1,5 @@
 #define ENGINE_DEMO 1
+#include "../Game/Metagame.h"
 #if ENGINE_DEMO
 
 #include "Graphics/Window.h"
@@ -22,8 +23,6 @@
 using namespace kodi;
 using namespace graphics;
 using namespace math;
-
-#include "../Game/DodgerGame.cpp"
 
 #if _WINDOWS
 #define _CRTDBG_MAP_ALLOC  
@@ -134,9 +133,14 @@ int main()
 
 #define KODI_THROW_EXCEPTIONS 1
 
-	DodgerGame g;
-	g.Start();
+	//DodgerGame g;
+	//g.Start();
+	//return 0;
+
+	Metagame m;
+	m.Start();
 	return 0;
+
 }
 #endif
 
