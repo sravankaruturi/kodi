@@ -13,13 +13,15 @@ namespace kodi
 
 	private:
 
-		graphics::Window * window;
+		
 
 		utils::Timer * myTimer;
 
 		unsigned int framesPerSecond, updatesPerSecond;
 
 	protected:
+
+		graphics::Window * window;
 
 		bool shouldClose = false;
 

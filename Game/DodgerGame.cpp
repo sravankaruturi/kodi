@@ -15,8 +15,6 @@ private:
 
 #define FALLING_BLOCKS_LIMIT	32
 
-	Window * window;
-
 	/* Layers */
 	Layer * menuLayer;
 	Layer * gameLayer;
@@ -54,10 +52,11 @@ private:
 
 public:
 
-	DodgerGame()
+	DodgerGame(Window * _window)
 	{
 
-		window = createWindow("Test DodgerGame", 800, 600);
+		this->window = _window;
+		_ASSERT(nullptr != window);
 
 		fallingBlocks.resize(2 * FALLING_BLOCKS_LIMIT);
 		time = glfwGetTime();

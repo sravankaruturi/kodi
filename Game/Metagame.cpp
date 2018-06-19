@@ -1,6 +1,8 @@
 ﻿#include "Metagame.h"
 #include "../Source/Graphics/Renderers/BatchRenderer2D.h"
 
+#include "../Game/DodgerGame.cpp"
+
 namespace kodi
 {
 	Metagame::Metagame()
@@ -64,6 +66,18 @@ namespace kodi
 		else if (window->IsKeyPressed(GLFW_KEY_DOWN))
 		{
 			this->selectionMenu->MenuDown();
+		}
+
+		if (window->IsKeyPressed(GLFW_KEY_ENTER)) {
+			switch (this->selectionMenu->selectedIndex) {
+
+				case 0:
+					currentGame = reinterpret_cast<Kodi *>(new DodgerGame(this->window));
+					isAGameActive = true;
+					currentGame->Start();
+					break;
+
+			}
 		}
 
 	}

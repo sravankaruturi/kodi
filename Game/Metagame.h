@@ -21,6 +21,10 @@ namespace kodi
 
 		float deltaTime, time;
 
+		bool isAGameActive = false;
+
+		Kodi * currentGame;
+
 		Metagame();
 		void Init() override;
 		void StartGame() override;
