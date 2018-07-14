@@ -100,9 +100,13 @@ namespace kodi
 	Metagame::~Metagame()
 	{
 
+		delete currentGame;
+
 		delete selectionLayer;
 		delete selectionShader;
 		delete selectionMenu;
+
+		delete window;
 
 		// Window would be terminated in Kodi Destructor.
 	}

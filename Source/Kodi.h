@@ -64,14 +64,14 @@ namespace kodi
 		virtual void ResetGame() = 0;
 
 
-
+	public:
 		virtual  ~Kodi()
 		{
-			delete window;
+			// This should not delete the window and terminate the GLFW Calls because Kodi is also the base class for the mini games.
+			//delete window;
 			delete myTimer;
 		}
 
-	public:
 		void Start()
 		{
 			Init();

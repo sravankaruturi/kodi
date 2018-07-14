@@ -21,6 +21,7 @@ private:
 	Layer * gameOverLayer;
 
 	Texture * fallingBlockTexture;
+	Texture * playerSpriteTexture;
 	std::vector<Sprite *> fallingBlocks;
 	Sprite * playerSprite;
 	Label * scoreLabel;
@@ -83,6 +84,23 @@ public:
 
 	~DodgerGame()
 	{
+
+		for (auto i = 0; i < FALLING_BLOCKS_LIMIT; i++)
+		{
+			delete fallingBlocks[i];
+		}
+
+		delete playerSprite;
+		delete playerSpriteTexture;
+
+		delete shader;
+
+		delete fallingBlockTexture;
+
+		delete startGameMenu;
+		delete scoreLabel;
+		delete gameOverLabel;
+
 		delete menuLayer;
 		delete gameLayer;
 		delete gameOverLayer;
@@ -110,7 +128,9 @@ public:
 			fallingBlocks[i] = (DBG_NEW Sprite(-15 + i * 1.5, 10, 1, 1, fallingBlockTexture));
 		}
 
-		playerSprite = DBG_NEW Sprite(0, 0, 1, 1, DBG_NEW Texture("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Assets/Dodger/Falling-Down-Player.png"));
+		playerSpriteTexture = DBG_NEW Texture("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Assets/Dodger/Falling-Down-Player.png");
+
+		playerSprite = DBG_NEW Sprite(0, 0, 1, 1, playerSpriteTexture);
 
 		menuLayer->Add(startGameMenu);
 
