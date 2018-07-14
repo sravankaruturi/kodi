@@ -14,8 +14,6 @@ namespace kodi
 
 	private:
 
-		
-
 		utils::Timer * myTimer;
 
 		unsigned int framesPerSecond, updatesPerSecond;
@@ -65,6 +63,9 @@ namespace kodi
 
 
 	public:
+
+		bool shouldAcceptInput = true;
+
 		virtual  ~Kodi()
 		{
 			// This should not delete the window and terminate the GLFW Calls because Kodi is also the base class for the mini games.
@@ -116,7 +117,7 @@ namespace kodi
 					Tick();
 				}
 
-				if ( window->IsKeyPressed(GLFW_KEY_ESCAPE) || this->shouldClose )
+				if ( (shouldAcceptInput && window->IsKeyPressedAndReleased(GLFW_KEY_ESCAPE))  || this->shouldClose )
 				{
 					break;
 				}
