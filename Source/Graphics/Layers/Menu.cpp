@@ -1,5 +1,6 @@
 ﻿#include "Menu.h"
 #include <GLFW/glfw3.h>
+#include "../Source/Utils/newOverride.h"
 
 namespace kodi
 {
@@ -29,7 +30,7 @@ namespace kodi
 			for (const auto& menu_item : _menuItems)
 			{
 				// TODO: Why is this a thing?? We need to be able to specify that it as zero and do it.
-				auto temp_label = new Label(menu_item, _position.x, i--, _colour);
+				auto temp_label = DBG_NEW Label(menu_item, _position.x, i--, _colour);
 
 				this->labels.push_back(temp_label);
 				this->renderables.push_back(temp_label);
@@ -46,7 +47,7 @@ namespace kodi
 			_ASSERT("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
 #endif
 
-			auto temp_texture = new Texture("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Assets/Textures/selector.png");
+			selectorTexture = DBG_NEW Texture("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Assets/Textures/selector.png");
 
 
 			error = glGetError();
@@ -59,14 +60,15 @@ namespace kodi
 			_ASSERT("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
 #endif
 
-			selector = new Sprite(_position.x - 1, this->labels[selectedIndex]->position.y + 0.25, 0.5, 0.5, temp_texture);
+			selector = DBG_NEW Sprite(_position.x - 1, this->labels[selectedIndex]->position.y + 0.25, 0.5, 0.5, selectorTexture);
 			this->renderables.push_back(selector);
 
 		}
 
 		Menu::~Menu()
 		{
-			delete selector;
+			// Groups deletion is handled in Groups destructor. Once you add the renderable to the group, it gets deleted that way.
+			delete selectorTexture;
 		}
 
 		void Menu::MenuDown()

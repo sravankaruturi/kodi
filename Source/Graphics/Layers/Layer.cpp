@@ -77,10 +77,11 @@ namespace kodi
 		{
 			delete renderer2D;
 
-			for (auto& renderable : renderables)
-			{
-				delete renderable;
-			}
+			// This only complicates freeing up memory.
+			//for (auto& renderable : renderables)
+			//{
+			//	delete renderable;
+			//}
 		}
 
 		void Layer::Add(Renderable2D* _renderable)

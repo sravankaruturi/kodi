@@ -16,14 +16,14 @@ namespace kodi
 			"Sliding Puzzle"
 		};
 
-		selectionMenu = new Menu(game_names, vec2(-4.0f, 2.0f), 0xFFFFFF, 1);
+		selectionMenu = DBG_NEW Menu(game_names, vec2(-4.0f, 2.0f), 0xFFFFFF, 1);
 
 	}
 
 	void Metagame::Init()
 	{
 		
-		selectionShader = new Shader(
+		selectionShader = DBG_NEW Shader(
 			"C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/Shaders/batchTexture.vert",
 			"C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/Shaders/batchTexture.frag"
 		);
@@ -38,7 +38,7 @@ namespace kodi
 		_ASSERT("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
 #endif
 
-		selectionLayer = new Layer(new BatchRenderer2D(), selectionShader, mat4::orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
+		selectionLayer = DBG_NEW Layer(DBG_NEW BatchRenderer2D(), selectionShader, mat4::orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
 
 		selectionLayer->Add(selectionMenu);
 		
@@ -72,7 +72,7 @@ namespace kodi
 			switch (this->selectionMenu->selectedIndex) {
 
 				case 0:
-					currentGame = reinterpret_cast<Kodi *>(new DodgerGame(this->window));
+					currentGame = reinterpret_cast<Kodi *>(DBG_NEW DodgerGame(this->window));
 					isAGameActive = true;
 					currentGame->Start();
 					break;
@@ -100,6 +100,11 @@ namespace kodi
 	Metagame::~Metagame()
 	{
 
+		delete selectionLayer;
+		delete selectionShader;
+		delete selectionMenu;
+
+		// Window would be terminated in Kodi Destructor.
 	}
 
 }

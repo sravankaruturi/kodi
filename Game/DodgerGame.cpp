@@ -3,7 +3,7 @@
 #include "../Source/Graphics/Label.h"
 #include "../Source/Graphics/Layers/Menu.h"
 #include <chrono>
-
+#include "../Source/Utils/newOverride.h"
 
 using namespace kodi;
 using namespace graphics;
@@ -73,11 +73,11 @@ public:
 
 		std::vector<std::string> test = { "Start Game", "Quit" };
 
-		startGameMenu = new Menu(test, vec2(-4.1f, 0.5f), 0xFFFF11, 1);
+		startGameMenu = DBG_NEW Menu(test, vec2(-4.1f, 0.5f), 0xFFFF11, 1);
 
-		scoreLabel = new Label(std::to_string(health), -15.5f, 8.0f, 0xFFFFFF);
+		scoreLabel = DBG_NEW Label(std::to_string(health), -15.5f, 8.0f, 0xFFFFFF);
 
-		gameOverLabel = new Label("Game Over Press Enter to restart", -6.0f, -0.5f, 0xFFFFFF);
+		gameOverLabel = DBG_NEW Label("Game Over Press Enter to restart", -6.0f, -0.5f, 0xFFFFFF);
 
 	};
 
@@ -94,23 +94,23 @@ public:
 	{
 				
 		// TODO : Ikkada Shader map thayaaru chesukoni pettuko.
-		shader = new Shader(
+		shader = DBG_NEW Shader(
 			"C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/Shaders/batchTexture.vert",
 			"C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Source/Shaders/batchTexture.frag");
 
-		menuLayer = new Layer(new BatchRenderer2D(), shader, math::mat4::orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
-		gameLayer = new Layer(new BatchRenderer2D(), shader, math::mat4::orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
-		gameOverLayer = new Layer(new BatchRenderer2D(), shader, math::mat4::orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
+		menuLayer = DBG_NEW Layer(DBG_NEW BatchRenderer2D(), shader, math::mat4::orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
+		gameLayer = DBG_NEW Layer(DBG_NEW BatchRenderer2D(), shader, math::mat4::orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
+		gameOverLayer = DBG_NEW Layer(DBG_NEW BatchRenderer2D(), shader, math::mat4::orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
 
-		fallingBlockTexture = new Texture("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Assets/Dodger/Fallin-Down-Enemy.png");
+		fallingBlockTexture = DBG_NEW Texture("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Assets/Dodger/Fallin-Down-Enemy.png");
 
 		// They are just above the visible screen space.
 		for(auto i = 0 ; i < FALLING_BLOCKS_LIMIT ; i++)
 		{
-			fallingBlocks[i] = (new Sprite(-15 + i * 1.5, 10, 1, 1, fallingBlockTexture));
+			fallingBlocks[i] = (DBG_NEW Sprite(-15 + i * 1.5, 10, 1, 1, fallingBlockTexture));
 		}
 
-		playerSprite = new Sprite(0, 0, 1, 1, new Texture("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Assets/Dodger/Falling-Down-Player.png"));
+		playerSprite = DBG_NEW Sprite(0, 0, 1, 1, DBG_NEW Texture("C:/Users/Sravan Karuturi/Documents/Work/Kodi-CrossPlatform/Kodi/Assets/Dodger/Falling-Down-Player.png"));
 
 		menuLayer->Add(startGameMenu);
 

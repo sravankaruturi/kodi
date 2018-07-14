@@ -2,6 +2,7 @@
 #include <assert.h>
 
 #include "../Renderables/Sprite.h"
+#include "../Source/Utils/newOverride.h"
 
 namespace kodi {
 	namespace graphics {
@@ -299,7 +300,7 @@ namespace kodi {
 			// Binding inkaa Unbinidng chaala ekkuva performance hits isthaayi.
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-			GLuint * indices = new GLuint[RENRERER_INDICES_SIZE];
+			GLuint * indices = DBG_NEW GLuint[RENRERER_INDICES_SIZE];
 
 			for (int i = 0, offset = 0; i < RENRERER_INDICES_SIZE; i+=6 , offset += 4) {
 
@@ -313,7 +314,10 @@ namespace kodi {
 
 			}
 
-			IBO = new IndexBuffer(indices, RENRERER_INDICES_SIZE);
+			IBO = DBG_NEW IndexBuffer(indices, RENRERER_INDICES_SIZE);
+
+			// We do not need the indices anymore. But we keep them and delete them in the destructor just in case... Welp.. you cannot. These are defined here. Out of scope for the destructor.
+			delete indices;
 
 			glBindVertexArray(0);
 

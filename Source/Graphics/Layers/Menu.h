@@ -22,6 +22,8 @@ namespace kodi
 			float timerDelayForMenuSelection = 0.25f;
 			float timeAtLastSelection = -1 * timerDelayForMenuSelection;
 
+			Texture * selectorTexture;
+
 		public:
 
 			int selectedIndex = 0;

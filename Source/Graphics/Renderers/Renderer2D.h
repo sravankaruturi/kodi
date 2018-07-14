@@ -54,6 +54,8 @@ namespace kodi {
 			virtual void Begin() {}
 			virtual void End() {}
 
+			virtual ~Renderer2D() {};
+
 		};
 
 	}

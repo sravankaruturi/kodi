@@ -6,16 +6,8 @@
 #include <iostream>
 #include "Math/Math.h"
 
-#include "Graphics/Renderables/Sprite.h"
-
-#include <ctime>
-
-#include "Utils/Timer.h"
-
 #include "TileLayer.h"
 #include <cassert>
-
-#include "Graphics/Layers/Group.h"
 
 #define STRESS_TEST			0
 #define GAME_TEST			1
@@ -23,12 +15,6 @@
 using namespace kodi;
 using namespace graphics;
 using namespace math;
-
-#if _WINDOWS
-#define _CRTDBG_MAP_ALLOC  
-#include <cstdlib>
-#include <crtdbg.h>  
-#endif
 
 #if STRESS_TEST
 
@@ -132,10 +118,6 @@ int main()
 	_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
 
 #define KODI_THROW_EXCEPTIONS 1
-
-	//DodgerGame g;
-	//g.Start();
-	//return 0;
 
 	Metagame m;
 	m.Start();

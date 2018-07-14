@@ -1,8 +1,9 @@
 ﻿#include "TileLayer.h"
 #include <cassert>
+#include "Utils/newOverride.h"
 
-	TileLayer::TileLayer(kodi::graphics::Shader* _shader)
-		: Layer(new kodi::graphics::BatchRenderer2D(), _shader, mat4::orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f))
+TileLayer::TileLayer(kodi::graphics::Shader* _shader)
+		: Layer(DBG_NEW kodi::graphics::BatchRenderer2D(), _shader, mat4::orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f))
 	{
 //			GLint * tex_ids = new GLint[32];
 //			for (auto i = 0; i < 32; i++) { tex_ids[i] = i; }

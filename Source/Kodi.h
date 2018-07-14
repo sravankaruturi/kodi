@@ -4,6 +4,7 @@
 #include "Utils/Timer.h"
 #include "Graphics/Layers/Layer.h"
 #include "Graphics/Renderables/Sprite.h"
+#include "Utils/newOverride.h"
 
 namespace kodi
 {
@@ -33,7 +34,7 @@ namespace kodi
 
 		graphics::Window * createWindow(const char * _name, int _width, int _height)
 		{
-			window = new graphics::Window(_name, _width, _height);
+			window = DBG_NEW graphics::Window(_name, _width, _height);
 			return window;
 		}
 
@@ -81,7 +82,7 @@ namespace kodi
 
 		void Run()
 		{
-			myTimer = new utils::Timer();
+			myTimer = DBG_NEW utils::Timer();
 			auto timer = 0.f;
 			auto update_timer = 0.f;
 			const auto update_tick = 1.0f / 60.0f;
