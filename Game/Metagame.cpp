@@ -68,7 +68,7 @@ namespace kodi
 			this->selectionMenu->MenuDown();
 		}
 
-		if (window->IsKeyPressed(GLFW_KEY_ENTER)) {
+		if (window->IsKeyPressedAndReleased(GLFW_KEY_ENTER)) {
 			switch (this->selectionMenu->selectedIndex) {
 
 				case 0:
@@ -77,6 +77,8 @@ namespace kodi
 					// మనం game ఆడుతూంటే Metagame కి input ఆపేస్తాం
 					this->shouldAcceptInput = !isAGameActive;
 					currentGame->Start();
+					// మనం ఇక్కడికి వచ్చామంటే Game అయ్యిపోయింది.
+					delete currentGame;
 					break;
 
 			}
@@ -108,8 +110,6 @@ namespace kodi
 
 	Metagame::~Metagame()
 	{
-
-		delete currentGame;
 
 		delete selectionLayer;
 		delete selectionShader;
