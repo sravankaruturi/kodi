@@ -1,4 +1,4 @@
-#include "Window.h"
+﻿#include "Window.h"
 #include <iostream>
 #include <cassert>
 #include "../Utils/GeneralUtils.h"
@@ -24,7 +24,12 @@ namespace kodi {
 
 			for (auto& key : keys)
 			{
-				key = false;
+				key = keyBool::key_inactive;
+			}
+
+			for (auto& key : prevKeys)
+			{
+				key = keyBool::key_inactive;
 			}
 
 			for (auto& mouse_button : mouseButtons)
@@ -52,7 +57,17 @@ namespace kodi {
 				return false;
 			}
 
-			return keys[_keyCode];
+			return ( keys[_keyCode] == key_pressed );
+		}
+
+		bool Window::IsKeyPressedAndReleased(unsigned _keyCode) const
+		{
+			// TODO: Log this.
+			if (_keyCode >= MAX_KEYS) {
+				return false;
+			}
+
+			return (keys[_keyCode] == key_released);
 		}
 
 		bool Window::IsMouseButtonPressed(unsigned int _button) const
@@ -123,7 +138,21 @@ namespace kodi {
 			assert("An error occured in OpenGL Calls Somewhere.", error == GL_NO_ERROR);
 #endif
 
+			// పాతవన్నీ ఒకచోట దాచుకొని మళ్ళీ చూడు
+			for ( auto i = 0 ; i < MAX_KEYS; i++)
+			{
+				prevKeys[i] = keys[i];
+			}
+
 			glfwPollEvents();
+
+			for (auto i = 0; i < MAX_KEYS; i++)
+			{
+				if ( (prevKeys[i] == key_released) && (keys[i] == key_released))
+				{
+					keys[i] = key_inactive;
+				}
+			}
 
 			glfwSwapBuffers(window);
 
@@ -160,8 +189,25 @@ namespace kodi {
 
 			auto win = static_cast<Window *>(glfwGetWindowUserPointer(_window));
 
-			win->keys[_key] =  (GLFW_RELEASE != action);
-			// win->keys[_key] = (GLFW_RELEASE == action) ? keyBool::keyReleased : (GLFW_PRESS
+
+			// ఇక్కడ మనం ప్రస్తుతమున్న State బట్టి కొత్త state పెడతాం
+			if ( win->keys[_key] == key_pressed || win->keys[_key] == key_held)
+			{
+				if ( action == GLFW_RELEASE)
+				{
+					win->keys[_key] = key_released;
+				}else if (action == GLFW_REPEAT)
+				{
+					win->keys[_key] = key_held;
+				}
+			}else
+			{
+				if (action == GLFW_PRESS)
+				{
+					win->keys[_key] = key_pressed;
+				}
+			}
+
 		}
 
 		void mouse_button_callback(GLFWwindow* _window, int _button, int _action, int _mods) {

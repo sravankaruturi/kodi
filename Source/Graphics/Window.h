@@ -20,7 +20,8 @@ namespace kodi
 		{
 			key_pressed,
 			key_held,
-			key_released
+			key_released,
+			key_inactive
 		};
 
 		class Window
@@ -40,7 +41,8 @@ namespace kodi
 
 			GLFWwindow* window{};
 
-			bool keys[MAX_KEYS]{};
+			keyBool keys[MAX_KEYS]{};
+			keyBool prevKeys[MAX_KEYS]{};
 			bool mouseButtons[MAX_BUTTONS]{};
 			double mouseX{}, mouseY{};
 
@@ -65,6 +67,7 @@ namespace kodi
 			}
 
 			bool IsKeyPressed(unsigned int _keyCode) const;
+			bool IsKeyPressedAndReleased(unsigned int _keyCode) const;
 			bool IsMouseButtonPressed(unsigned int _button) const;
 			void GetMousePosition(double& x, double& y) const;
 

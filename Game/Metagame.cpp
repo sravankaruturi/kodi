@@ -74,11 +74,20 @@ namespace kodi
 				case 0:
 					currentGame = reinterpret_cast<Kodi *>(DBG_NEW DodgerGame(this->window));
 					isAGameActive = true;
+					// మనం game ఆడుతూంటే Metagame కి input ఆపేస్తాం
+					this->shouldAcceptInput = !isAGameActive;
 					currentGame->Start();
 					break;
 
 			}
 		}
+
+		// మనం game ఆడుతూంటే Metagame కి input ఆపేస్తాం
+		this->shouldAcceptInput = !isAGameActive;
+
+		// If the game is active, the control of the program should never reach here.
+		// ఇంకా game ఆడుతూంటే ఇక్కడికి అసలు రాకూడదు. Start Loop లోనే వుండాలి
+		isAGameActive = false;
 
 	}
 
