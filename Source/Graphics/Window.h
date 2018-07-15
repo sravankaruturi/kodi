@@ -43,7 +43,11 @@ namespace kodi
 
 			keyBool keys[MAX_KEYS]{};
 			keyBool prevKeys[MAX_KEYS]{};
-			bool mouseButtons[MAX_BUTTONS]{};
+
+
+			keyBool mouseButtons[MAX_BUTTONS]{};
+			keyBool prevMouseButtons[MAX_BUTTONS]{};
+
 			double mouseX{}, mouseY{};
 
 		public:
@@ -68,7 +72,10 @@ namespace kodi
 
 			bool IsKeyPressed(unsigned int _keyCode) const;
 			bool IsKeyPressedAndReleased(unsigned int _keyCode) const;
+
 			bool IsMouseButtonPressed(unsigned int _button) const;
+			bool IsMouseButtonPressedAndReleased(unsigned int _button) const;
+
 			void GetMousePosition(double& x, double& y) const;
 
 			static void Clear();

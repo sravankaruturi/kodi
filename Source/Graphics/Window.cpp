@@ -34,7 +34,12 @@ namespace kodi {
 
 			for (auto& mouse_button : mouseButtons)
 			{
-				mouse_button = false;
+				mouse_button = key_inactive;
+			}
+
+			for (auto& mouse_button : prevMouseButtons)
+			{
+				mouse_button = key_inactive;
 			}
 
 			/*Timing Stuff*/
@@ -67,7 +72,7 @@ namespace kodi {
 				return false;
 			}
 
-			return (keys[_keyCode] == key_released);
+			return ( keys[_keyCode] == key_released );
 		}
 
 		bool Window::IsMouseButtonPressed(unsigned int _button) const
@@ -77,8 +82,19 @@ namespace kodi {
 				return false;
 			}
 
-			return mouseButtons[_button];
+			return ( mouseButtons[_button] == key_pressed );
 		}
+
+		bool Window::IsMouseButtonPressedAndReleased(unsigned _button) const
+		{
+			// TODO: Log this.
+			if (_button >= MAX_BUTTONS) {
+				return false;
+			}
+
+			return (mouseButtons[_button] == key_released);
+		}
+
 
 		void Window::GetMousePosition(double & x, double & y) const
 		{
@@ -143,6 +159,10 @@ namespace kodi {
 			{
 				prevKeys[i] = keys[i];
 			}
+			for (auto i = 0; i < MAX_BUTTONS; i++)
+			{
+				prevMouseButtons[i] = mouseButtons[i];
+			}
 
 			glfwPollEvents();
 
@@ -151,6 +171,14 @@ namespace kodi {
 				if ( (prevKeys[i] == key_released) && (keys[i] == key_released))
 				{
 					keys[i] = key_inactive;
+				}
+			}
+
+			for (auto i = 0; i < MAX_BUTTONS; i++)
+			{
+				if ((prevMouseButtons[i] == key_released) && (mouseButtons[i] == key_released))
+				{
+					mouseButtons[i] = key_inactive;
 				}
 			}
 
