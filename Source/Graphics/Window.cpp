@@ -241,8 +241,24 @@ namespace kodi {
 		void mouse_button_callback(GLFWwindow* _window, int _button, int _action, int _mods) {
 
 			auto * win = (Window *)glfwGetWindowUserPointer(_window);
-			
-			win->mouseButtons[_button] = (GLFW_RELEASE != _action);
+
+			// ఇక్కడ మనం ప్రస్తుతమున్న State బట్టి కొత్త state పెడతాం
+			if ( win->mouseButtons[_button] == key_pressed || win->mouseButtons[_button] == key_held)
+			{
+				if ( _action == GLFW_RELEASE)
+				{
+					win->mouseButtons[_button] = key_released;
+				}else if ( _action == GLFW_REPEAT)
+				{
+					win->mouseButtons[_button] = key_held;
+				}
+			}else
+			{
+				if ( _action == GLFW_PRESS)
+				{
+					win->mouseButtons[_button] = key_pressed;
+				}
+			}
 
 		}
 

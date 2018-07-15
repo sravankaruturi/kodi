@@ -2,6 +2,7 @@
 #include "../Source/Graphics/Renderers/BatchRenderer2D.h"
 
 #include "../Game/DodgerGame.cpp"
+#include "../Game/MemoryPuzzle.h"
 
 namespace kodi
 {
@@ -73,6 +74,15 @@ namespace kodi
 
 				case 0:
 					currentGame = reinterpret_cast<Kodi *>(DBG_NEW DodgerGame(this->window));
+					isAGameActive = true;
+					// మనం game ఆడుతూంటే Metagame కి input ఆపేస్తాం
+					this->shouldAcceptInput = !isAGameActive;
+					currentGame->Start();
+					// మనం ఇక్కడికి వచ్చామంటే Game అయ్యిపోయింది.
+					delete currentGame;
+					break;
+				case 1:
+					currentGame = reinterpret_cast<Kodi *>(DBG_NEW MemoryPuzzle(this->window));
 					isAGameActive = true;
 					// మనం game ఆడుతూంటే Metagame కి input ఆపేస్తాం
 					this->shouldAcceptInput = !isAGameActive;
